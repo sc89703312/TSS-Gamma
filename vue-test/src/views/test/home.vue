@@ -72,18 +72,13 @@
     margin-right: 100px;
     max-height: 520px;
   }
-
-
 </style>
 
 <script>
   export default {
     data () {
       return {
-        items: [
-          {name: '课程1', index: '1', key: '1'},
-          {name: '课程2', index: '2', key: '2'}
-        ]
+        items: []
       }
     },
     methods: {
@@ -94,7 +89,20 @@
         } else {
           this.$router.push({name: 'TestTable', params: {course_id: index}})
         }
+      },
+      fetchCourseList () {
+        // 将来会在这些方法里面做数据加载 调用services中文件
+        let data = [
+          {name: '课程1', index: '1', key: '1'},
+          {name: '课程2', index: '2', key: '2'}
+        ]
+        this.items = data
       }
+    },
+    mounted () {
+      //  mounted在组件创建完成后执行,加载数据用,注意mounted方法在组件生命周期中只加载一次
+      //  如果需要根据url加载数据,则需要对route做监听
+      this.fetchCourseList()
     }
   }
 </script>
