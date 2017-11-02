@@ -21,17 +21,13 @@
                 </template>
                 <el-menu-item-group>
                   <template slot="title">课程</template>
-                  <el-menu-item index="1-1">课程1</el-menu-item>
-                  <el-menu-item index="1-2">课程2</el-menu-item>
-                  <el-menu-item index="1-3">课程3</el-menu-item>
-                  <el-menu-item index="1-4">课程4</el-menu-item>
-                  <el-menu-item index="1-5">课程5</el-menu-item>
-                  <el-menu-item index="1-6">课程6</el-menu-item>
-                  <el-menu-item index="1-7">课程7</el-menu-item>
+                  <el-menu-item v-for="item in items" :index="item.index" :key="item.key">
+                    {{item.name}}
+                  </el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <!--添加课程-->
-              <el-menu-item index="2">
+              <el-menu-item index="create">
                 <el-row type="flex" align="middle">
                   <i class="el-icon-circle-plus-outline"></i>
                   <span>添加课程</span>
@@ -42,9 +38,10 @@
       </el-aside>
 
       <!--主内容-->
-      <el-main>
-
+      <el-main class="mail-container">
+        <router-view></router-view>
       </el-main>
+
     </el-container>
   </el-container>
 </template>
@@ -64,12 +61,18 @@
 
   .el-main {
     color: #333;
-    line-height: 560px;
   }
 
   .el-container:nth-child(2) {
     margin-top: 10px;
   }
+
+  .mail-container {
+    margin-left: 100px;
+    margin-right: 100px;
+    max-height: 520px;
+  }
+
 
 </style>
 
@@ -77,12 +80,20 @@
   export default {
     data () {
       return {
-
+        items: [
+          {name: '课程1', index: '1', key: '1'},
+          {name: '课程2', index: '2', key: '2'}
+        ]
       }
     },
     methods: {
-      handleSelect (key, keyPath) {
-        console.log('当前选中了index: ' + key)
+      handleSelect (index, keyPath) {
+        console.log('当前选中了index: ' + index)
+        if (index === 'create') {
+          this.$router.push({name: 'CreateTable'})
+        } else {
+          this.$router.push({name: 'TestTable', params: {course_id: index}})
+        }
       }
     }
   }
