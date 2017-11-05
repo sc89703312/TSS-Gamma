@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
@@ -24,6 +26,9 @@ public class OnlineexamApplicationTests {
 
 	@Autowired
 	StudentExamRepo studentExamRepo;
+
+	@Autowired
+	private JavaMailSender mailSender;
 
 	@Test
 	@Transactional
@@ -51,6 +56,16 @@ public class OnlineexamApplicationTests {
 			});
 		});
 
+	}
+
+	@Test
+	public void sendMail(){
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("13260905180@163.com");	//must equal auth user
+		message.setTo("141250106@smail.nju.edu.cn");
+		message.setText("test message");
+		message.setSubject("test message");
+		mailSender.send(message);
 	}
 
 }
