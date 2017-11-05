@@ -18,18 +18,4 @@ public class OnlineexamApplication {
 		SpringApplication.run(OnlineexamApplication.class, args);
 	}
 
-
-	@Component
-	class TestTableRunner implements CommandLineRunner{
-
-		@Autowired
-		TestTableRepo repo;
-
-		@Override
-		public void run(String... args) throws Exception {
-			List<TestTableEntity> list = repo.findAll();
-			System.out.println(list);
-		}
-	}
-
 }

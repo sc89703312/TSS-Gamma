@@ -3,9 +3,12 @@ package com.nju.onlineexam.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "question")
 @Data
+@ToString(exclude = "choiceList")
+@EqualsAndHashCode(exclude = "choiceList")
 public class QuestionEntity {
 
     @Id
@@ -18,5 +21,8 @@ public class QuestionEntity {
     String description;
 
     boolean isMultiAnswer;
+
+    @OneToMany(mappedBy = "question")
+    List<ChoiceEntity> choiceList;
 
 }

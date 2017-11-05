@@ -1,25 +1,27 @@
 package com.nju.onlineexam.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 
-@Entity(name = "exam_question")
+@Entity(name = "student_exam_paper")
 @Data
-public class ExamQuestionEntity {
+public class StudentExamPaperEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
 
+    String choice_map;
+
+    String selected;
+
+    boolean isMarked;
+
     @ManyToOne
     QuestionEntity question;
 
     @ManyToOne
-    ExamEntity exam;
-
-    int score;
+    StudentExamEntity studentExam;
 
 }
