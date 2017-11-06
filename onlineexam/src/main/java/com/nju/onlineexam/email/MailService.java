@@ -14,5 +14,4 @@ public class MailService {
     private JavaMailSender mailSender;
 
 
-
 }
