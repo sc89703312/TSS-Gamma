@@ -8,7 +8,7 @@
         <span class="form-subtitle">选择考生，生成试卷</span>
       </el-col>
     </el-row>
-    <el-form ref="form" :model="form" label-width="80px">
+    <el-form ref="form" :model="form" label-width="80px" label-position="left">
       <el-form-item label="学生列表" class="last-form-item">
         <el-checkbox :indeterminate="form.isIndeterminate" v-model="form.checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <el-checkbox-group v-model="form.checkedStudents" @change="handleCheckedStudentsChange">
@@ -31,8 +31,7 @@
   .form-title {
     width: 68px;
     max-width: 68px;
-    text-align: right;
-    /*margin-bottom: 0px;*/
+    text-align: left;
   }
   .form-subtitle {
     width: 120px;

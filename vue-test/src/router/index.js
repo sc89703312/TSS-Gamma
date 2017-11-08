@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
-import Test from '@/views/test/home'
-import TestTable from '@/components/TestTable'
+import TeacherHome from '@/views/teacher/home'
+import ExamTable from '@/components/ExamTable'
 import CreateCourse from '@/components/CreateCourse'
 import CreateExam from '@/components/CreateExam'
 import StudentList from '@/components/StudentList'
@@ -14,7 +14,7 @@ export default new Router({
     {
       path: '/',
       name: 'Hello',
-      component: Test,
+      component: TeacherHome,
       children: [
         {
           path: '/course/create',
@@ -24,7 +24,7 @@ export default new Router({
         {
           path: '/course/:course_id',
           name: 'TestTable',
-          component: TestTable
+          component: ExamTable
         },
         {
           path: '/course/:course_id/exam/create',
