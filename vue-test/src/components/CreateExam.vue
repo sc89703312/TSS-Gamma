@@ -39,7 +39,7 @@
 
       <el-form-item>
         <el-button type="primary" size="small" @click="onSubmit">立即创建</el-button>
-        <el-button size="small">取消</el-button>
+        <el-button size="small" @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -75,6 +75,9 @@
     methods: {
       onSubmit () {
         console.log(this.form.scores)
+      },
+      onCancel () {
+        this.$router.back()
       }
     }
   }
