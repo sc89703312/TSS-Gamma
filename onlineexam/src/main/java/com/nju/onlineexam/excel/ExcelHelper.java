@@ -65,7 +65,7 @@ public class ExcelHelper {
             Row row = sheet.getRow(i);
             List<String> cellValues = new ArrayList<>();
 
-            for(int j = 0; j < row.getPhysicalNumberOfCells(); j++){
+            for(int j = 0; j < row.getLastCellNum(); j++){
                 Cell cell = row.getCell(j);
                 cellValues.add(formatter.formatCellValue(cell));
             }
