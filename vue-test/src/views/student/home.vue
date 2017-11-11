@@ -91,6 +91,7 @@
     methods: {
       handleSelect (index, keyPath) {
         console.log('当前选中了index: ' + index)
+        this.$router.push({name: 'StudentHome', params: {student_id: this.$route.params.student_id}})
         this.currentIndex = index
         this.pwdDialogVisible = true
       },
@@ -117,8 +118,14 @@
       fetchExamInitData () {
         let questionList = ['1', '2', '3', '4', '5', '6']
         let questionNum = questionList.length
+        let answerList = []
+        questionList.map(function (value, index) {
+          answerList.push(-1)
+        })
         this.$cookie.set('questionList', questionList)
         this.$cookie.set('questionNum', questionNum)
+        this.$cookie.set('markedList', [])
+        this.$cookie.set('answerList', answerList)
       }
     },
     mounted () {
