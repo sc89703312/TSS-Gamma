@@ -76,6 +76,7 @@
 
 <script>
   export default {
+    name: 'TeacherHome',
     data () {
       return {
         items: []

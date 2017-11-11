@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 class="form-title">新建考试</h4>
-    <el-form ref="form" :model="form" label-width="80px" size="medium">
+    <el-form ref="form" :model="form" label-width="80px" size="medium" label-position="left">
       <el-form-item label="考试名称">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -39,7 +39,7 @@
 
       <el-form-item>
         <el-button type="primary" size="small" @click="onSubmit">立即创建</el-button>
-        <el-button size="small">取消</el-button>
+        <el-button size="small" @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -54,9 +54,7 @@
   }
 
   .form-title {
-    width: 68px;
-    max-width: 68px;
-    text-align: right;
+    text-align: left;
   }
 </style>
 <script>
@@ -75,6 +73,9 @@
     methods: {
       onSubmit () {
         console.log(this.form.scores)
+      },
+      onCancel () {
+        this.$router.back()
       }
     }
   }

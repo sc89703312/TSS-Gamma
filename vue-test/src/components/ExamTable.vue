@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-container">
     <el-row type="flex" :gutter="15" class="table-button">
       <el-col>
         <el-button icon="el-icon-plus" size="small" @click="addRecord">新建考试</el-button>
@@ -38,11 +38,15 @@
   .table-button {
     float: right;
   }
+
+  .table-container {
+    margin-top: 18px;
+  }
 </style>
 
 <script>
   export default {
-    name: 'TestTable',
+    name: 'ExamTable',
     data () {
       return {
         tableData: []
