@@ -8,6 +8,7 @@ import CreateCourse from '@/components/CreateCourse'
 import CreateExam from '@/components/CreateExam'
 import StudentList from '@/components/StudentList'
 import ExamPaper from '@/components/ExamPaper'
+import AnswerGather from '@/components/AnswerGather'
 
 Vue.use(Router)
 
@@ -49,6 +50,11 @@ export default new Router({
           path: '/student/:student_id/exam/:exam_id/q/:q_id',
           name: 'ExamPaper',
           component: ExamPaper
+        },
+        {
+          path: '/student/:student_id/exam/:exam_id/answers',
+          name: 'AnswerPaper',
+          component: AnswerGather
         }
       ]
     }

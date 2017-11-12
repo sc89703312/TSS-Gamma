@@ -73,7 +73,7 @@
   .mail-container {
     margin-left: 100px;
     margin-right: 100px;
-    max-height: 520px;
+    /*max-height: 520px;*/
   }
 </style>
 
@@ -119,13 +119,16 @@
         let questionList = ['1', '2', '3', '4', '5', '6']
         let questionNum = questionList.length
         let answerList = []
+        let answerContent = []
         questionList.map(function (value, index) {
           answerList.push(-1)
+          answerContent.push('')
         })
         this.$cookie.set('questionList', questionList)
         this.$cookie.set('questionNum', questionNum)
         this.$cookie.set('markedList', [])
         this.$cookie.set('answerList', JSON.stringify(answerList))
+        this.$cookie.set('answerContent', JSON.stringify(answerContent))
       }
     },
     mounted () {

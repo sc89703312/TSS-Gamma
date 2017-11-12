@@ -31,12 +31,13 @@
           </el-checkbox-group>
         </template>
         <el-button @click="markQ" type="warning" size="small" icon="el-icon-edit-outline">{{markFlag}}</el-button>
+        <el-button @click="answerGather" type="success" size="small" icon="el-icon-document">汇总页面</el-button>
+
         <el-button-group style="float: right">
           <el-button @click="previousQ" v-if="previousQVisible" size="small" type="primary" icon="el-icon-arrow-left">上一页</el-button>
           <el-button @click="nextQ" v-if="nextQVisible" size="small" type="primary">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
         </el-button-group>
       </div>
-
     </el-card>
   </div>
 </template>
@@ -91,14 +92,16 @@
         question: '',
         options: [],
         isMarked: false,
-        markFlag: '标记题目'
+        markFlag: '标记题目',
+        answerCard: ['1'],
+        activeName: '1'
       }
     },
     methods: {
       timerCal () {
         var date = new Date()
         var now = date.getTime()
-        var endDate = new Date('2017-11-11 23:23:23')
+        var endDate = new Date('2017-11-12 23:23:23')
         var end = endDate.getTime()
         var leftTime = end - now
         var h, m, s
@@ -151,14 +154,30 @@
           this.$cookie.set('markedList', markedList)
         }
       },
+      answerGather () {
+        this.$router.push({name: 'AnswerPaper', params: {'student_id': this.$route.params.student_id, 'exam_id': this.$route.params.exam_id}})
+      },
       selectAnswer (val) {
         let answerList = JSON.parse(this.$cookie.get('answerList'))
+        let answerContent = JSON.parse(this.$cookie.get('answerContent'))
         let currentQId = this.$route.params.q_id
         let questionList = this.$cookie.get('questionList').split(',')
         let currentIndex = questionList.indexOf(currentQId)
         answerList[currentIndex] = val
+        console.log(val)
+        if (val instanceof Array) {
+          let contentList = []
+          for (var index in val) {
+            contentList.push(this.options[val[index] - 1].content)
+          }
+          answerContent[currentIndex] = contentList
+        } else {
+          answerContent[currentIndex] = this.options[val - 1].content
+        }
         this.$cookie.set('answerList', JSON.stringify(answerList))
+        this.$cookie.set('answerContent', JSON.stringify(answerContent))
         console.log(this.$cookie.get('answerList'))
+        console.log(this.$cookie.get('answerContent'))
       },
       markDetected () {
         let markedList = this.$cookie.get('markedList').split(',')
@@ -191,9 +210,9 @@
         this.question = '2016年二十国集团峰会第一次协调人会议1月14日在北京国际饭店开幕。杭州峰会主题是“（   ）”。'
         this.options = [
           {id: 1, content: '构建创新、活力、联动、包容的世界经济'},
-          {id: 2, content: '构建创新、活力、联动、包容的世界经济'},
-          {id: 3, content: '构建创新、活力、联动、包容的世界经济'},
-          {id: 4, content: '构建创新、活力、联动、包容的世界经济'}
+          {id: 2, content: '创新新生代的——又快又高强的现代社会经济共用体'},
+          {id: 3, content: '我家有一头大象, 大象, 大象的脖子长'},
+          {id: 4, content: '毛泽东思想, 邓小平理论, 三个代表'}
         ]
         this.multiple = this.$route.params.q_id >= 4
       }
@@ -205,6 +224,7 @@
         this.markDetected()
         this.selectDetected()
         this.fetchQuestionInfo()
+//        this.answerCardDetected()
       }
     },
     computed: {
@@ -246,6 +266,7 @@
       this.markDetected()
       this.selectDetected()
       this.fetchQuestionInfo()
+//      this.answerCardDetected()
     }
   }
 </script>
