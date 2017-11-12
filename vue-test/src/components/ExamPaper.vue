@@ -13,15 +13,22 @@
       </div>
 
       <div>
-        <div class="question">【时事】2016年二十国集团峰会第一次协调人会议1月14日在北京国际饭店开幕。杭州峰会主题是“（   ）”。</div>
+        <div class="question">【{{questionType}}】{{question}}</div>
         <template>
-          <el-radio-group v-model="answer" @change="selectAnswer">
+          <el-radio-group v-if="!multiple" v-model="answer" @change="selectAnswer">
             <template v-for="option in options">
               <el-col :span="24" class="option">
                 <el-radio :label="option.id">{{option.content}}</el-radio>
               </el-col>
             </template>
           </el-radio-group>
+          <el-checkbox-group v-if="multiple" v-model="answerList" @change="selectAnswer">
+            <template v-for="option in options">
+              <el-col :span="24" class="option">
+                <el-checkbox :label="option.id">{{option.content}}</el-checkbox>
+              </el-col>
+            </template>
+          </el-checkbox-group>
         </template>
         <el-button @click="markQ" type="warning" size="small" icon="el-icon-edit-outline">{{markFlag}}</el-button>
         <el-button-group style="float: right">
@@ -79,12 +86,10 @@
       return {
         timer: '',
         answer: 1,
-        options: [
-          {id: 1, content: '构建创新、活力、联动、包容的世界经济'},
-          {id: 2, content: '构建创新、活力、联动、包容的世界经济'},
-          {id: 3, content: '构建创新、活力、联动、包容的世界经济'},
-          {id: 4, content: '构建创新、活力、联动、包容的世界经济'}
-        ],
+        answerList: [],
+        multiple: true,
+        question: '',
+        options: [],
         isMarked: false,
         markFlag: '标记题目'
       }
@@ -147,12 +152,13 @@
         }
       },
       selectAnswer (val) {
-        let answerList = this.$cookie.get('answerList').split(',')
+        let answerList = JSON.parse(this.$cookie.get('answerList'))
         let currentQId = this.$route.params.q_id
         let questionList = this.$cookie.get('questionList').split(',')
         let currentIndex = questionList.indexOf(currentQId)
         answerList[currentIndex] = val
-        this.$cookie.set('answerList', answerList)
+        this.$cookie.set('answerList', JSON.stringify(answerList))
+        console.log(this.$cookie.get('answerList'))
       },
       markDetected () {
         let markedList = this.$cookie.get('markedList').split(',')
@@ -167,17 +173,29 @@
         }
       },
       selectDetected () {
-        let answerList = this.$cookie.get('answerList').split(',')
+        let answerList = JSON.parse(this.$cookie.get('answerList'))
         let currentQId = this.$route.params.q_id
         let questionList = this.$cookie.get('questionList').split(',')
         let currentIndex = questionList.indexOf(currentQId)
         let recordSelect = answerList[currentIndex]
         if (recordSelect === -1) {
           this.answer = 0
+          this.answerList = []
+        } else if (this.multiple) {
+          this.answerList = recordSelect
         } else {
           this.answer = parseInt(recordSelect)
         }
-        console.log(this.answer)
+      },
+      fetchQuestionInfo () {
+        this.question = '2016年二十国集团峰会第一次协调人会议1月14日在北京国际饭店开幕。杭州峰会主题是“（   ）”。'
+        this.options = [
+          {id: 1, content: '构建创新、活力、联动、包容的世界经济'},
+          {id: 2, content: '构建创新、活力、联动、包容的世界经济'},
+          {id: 3, content: '构建创新、活力、联动、包容的世界经济'},
+          {id: 4, content: '构建创新、活力、联动、包容的世界经济'}
+        ]
+        this.multiple = this.$route.params.q_id >= 4
       }
     },
     watch: {
@@ -186,6 +204,7 @@
       $route () {
         this.markDetected()
         this.selectDetected()
+        this.fetchQuestionInfo()
       }
     },
     computed: {
@@ -217,12 +236,16 @@
         } else {
           return true
         }
+      },
+      questionType: function () {
+        return this.multiple ? '多选' : '单选'
       }
     },
     mounted () {
       this.timerCal()
       this.markDetected()
       this.selectDetected()
+      this.fetchQuestionInfo()
     }
   }
 </script>

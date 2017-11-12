@@ -125,7 +125,7 @@
         this.$cookie.set('questionList', questionList)
         this.$cookie.set('questionNum', questionNum)
         this.$cookie.set('markedList', [])
-        this.$cookie.set('answerList', answerList)
+        this.$cookie.set('answerList', JSON.stringify(answerList))
       }
     },
     mounted () {
