@@ -9,6 +9,8 @@ import CreateExam from '@/components/CreateExam'
 import StudentList from '@/components/StudentList'
 import ExamPaper from '@/components/ExamPaper'
 import AnswerGather from '@/components/AnswerGather'
+import VerifyHome from '@/views/verify/home'
+import Register from '@/views/verify/register'
 
 Vue.use(Router)
 
@@ -16,7 +18,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
+      name: 'TeacherHome',
       component: TeacherHome,
       children: [
         {
@@ -57,6 +59,16 @@ export default new Router({
           component: AnswerGather
         }
       ]
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: VerifyHome
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     }
   ]
 })

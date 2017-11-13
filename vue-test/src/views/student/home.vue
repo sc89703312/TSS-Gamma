@@ -1,7 +1,10 @@
 <template>
   <el-container>
     <!--头部-->
-    <el-header>TSS-Gamma</el-header>
+    <el-header>
+      TSS-Gamma
+      <router-link class="exit-link" :to="{name: 'Login'}">退出登录</router-link>
+    </el-header>
 
     <el-container>
       <!--侧边栏-->
@@ -74,6 +77,13 @@
     margin-left: 100px;
     margin-right: 100px;
     /*max-height: 520px;*/
+  }
+
+  .exit-link {
+    color: #fff;
+    text-decoration: none;
+    float: right;
+    font-size: 12px;
   }
 </style>
 
