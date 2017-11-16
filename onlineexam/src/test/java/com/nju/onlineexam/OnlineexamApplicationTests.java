@@ -111,6 +111,11 @@ public class OnlineexamApplicationTests {
 
 	}
 
+	@Test
+	public void selectQuestionId(){
+		System.out.println(questionRepo.findIdsByCourseId(1));
+	}
+
 	private class StudentPaper{
 		String number;
 		String question;
