@@ -12,7 +12,7 @@ public class StudentExamPaperEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
 
-    String choice_map;
+    String choiceMap;
 
     String selected;
 
