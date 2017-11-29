@@ -17,7 +17,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/teacher',
       name: 'TeacherHome',
       component: TeacherHome,
       children: [
@@ -61,7 +61,7 @@ export default new Router({
       ]
     },
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       component: VerifyHome
     },

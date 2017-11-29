@@ -39,6 +39,7 @@
 </style>
 
 <script>
+  import ResourceTeacher from '@/services/teacher'
   export default {
     name: 'StudentList',
     data () {
@@ -54,14 +55,8 @@
     methods: {
       fetchStudentList () {
         // 加载数据
-        let index = 0
-        for (;index < 100; index++) {
-          let item = {
-            id: index,
-            name: '张三'
-          }
-          this.form.students.push(item)
-        }
+        let examId = this.$route.params.exam_id
+        this.form.students = ResourceTeacher.examStudentList({examId: examId}).data
       },
       handleCheckAllChange (val) {
         this.form.checkedStudents = val ? this.form.students : []

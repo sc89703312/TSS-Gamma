@@ -88,6 +88,7 @@
 </style>
 
 <script>
+  import ResourceStudent from '@/services/student'
   export default {
     name: 'StudentHome',
     data () {
@@ -107,11 +108,8 @@
       },
       fetchExamList () {
         // 将来会在这些方法里面做数据加载 调用services中文件
-        let data = [
-          {name: '考试1', index: '1', key: '1'},
-          {name: '考试2', index: '2', key: '2'}
-        ]
-        this.items = data
+        let id = this.$route.params.student_id
+        this.items = ResourceStudent.examList({studentId: id}).data
       },
       verifyExamCode () {
         console.log('exam code : ' + this.pwd)

@@ -84,6 +84,7 @@
 </style>
 
 <script>
+  import ResourceTeacher from '@/services/teacher'
   export default {
     name: 'TeacherHome',
     data () {
@@ -102,11 +103,8 @@
       },
       fetchCourseList () {
         // 将来会在这些方法里面做数据加载 调用services中文件
-        let data = [
-          {name: '课程1', index: '1', key: '1'},
-          {name: '课程2', index: '2', key: '2'}
-        ]
-        this.items = data
+        let res = ResourceTeacher.courseList({teacherId: 1})
+        this.items = res.data
       }
     },
     mounted () {
