@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import java.sql.Date;
 import java.util.List;
 
-
 @Data
 public class CreateExamVo {
 
