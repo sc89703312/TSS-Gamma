@@ -2,13 +2,8 @@ package com.nju.onlineexam;
 
 import com.nju.onlineexam.dao.QuestionRepo;
 import com.nju.onlineexam.dao.StudentExamRepo;
-import com.nju.onlineexam.entity.CourseEntity;
-import com.nju.onlineexam.entity.QuestionEntity;
-import com.nju.onlineexam.entity.StudentExamEntity;
-import com.nju.onlineexam.entity.TeacherEntity;
 import com.nju.onlineexam.excel.ExcelHelper;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +70,7 @@ public class OnlineexamApplicationTests {
 		File file = new File("test_excel/test.xlsx");
 		FileInputStream fiStream = new FileInputStream(file);
 
-		List<Map<String,String>> voList = excelHelper.convertToVo(fiStream,file.getName(),2, l->{
+		List<Map<String,String>> voList = excelHelper.convertToObj(fiStream,file.getName(),2, l->{
 			System.out.println("field list:"+l);
 			Map<String,String> map = new LinkedHashMap<>();
 			map.put("name",l.get(0));
@@ -109,6 +104,11 @@ public class OnlineexamApplicationTests {
 
 		workbook.write(new FileOutputStream("test_excel/test_write_a.xlsx"));
 
+	}
+
+	@Test
+	public void selectQuestionId(){
+		System.out.println(questionRepo.findIdsByCourseId(1));
 	}
 
 	private class StudentPaper{

@@ -9,8 +9,8 @@ import java.util.List;
 
 @Entity(name = "course")
 @Data
-@ToString(exclude = "examList")
-@EqualsAndHashCode(exclude = "examList")
+@ToString(exclude = {"examList","questionList"})
+@EqualsAndHashCode(exclude = {"examList","questionList"})
 public class CourseEntity {
 
     @Id
@@ -25,4 +25,6 @@ public class CourseEntity {
     @OneToMany(mappedBy = "course")
     List<ExamEntity> examList;
 
+    @OneToMany(mappedBy = "course")
+    List<QuestionEntity> questionList;
 }

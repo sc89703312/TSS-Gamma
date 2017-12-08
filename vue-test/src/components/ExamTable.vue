@@ -45,6 +45,7 @@
 </style>
 
 <script>
+  import ResourceTeacher from '@/services/teacher'
   export default {
     name: 'ExamTable',
     data () {
@@ -57,12 +58,8 @@
       fetchExamList () {
         // 加载数据
         let id = parseInt(this.$route.params.course_id)
-        const item = {
-          exam_id: '000001',
-          date: '2016/07/11',
-          name: '软件过程管理'
-        }
-        this.tableData = Array(id).fill(item)
+        let res = ResourceTeacher.courseExamList({courseId: id})
+        this.tableData = res.data
       },
 
       addRecord () {

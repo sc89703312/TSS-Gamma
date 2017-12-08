@@ -1,4 +1,0 @@
-todo 封装excel row->voList 和 voList -> row的转换
-
- List<T> convertToVo(Excel, int startRow , T function( List<String> ) )
- Excel convertToExcel(List<T>, int startRow , List<String> function(T) );

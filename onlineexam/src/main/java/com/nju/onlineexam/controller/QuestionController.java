@@ -6,7 +6,9 @@ import com.nju.onlineexam.dao.QuestionRepo;
 import com.nju.onlineexam.entity.ChoiceEntity;
 import com.nju.onlineexam.entity.CourseEntity;
 import com.nju.onlineexam.entity.QuestionEntity;
+import com.nju.onlineexam.excel.ExcelHelper;
 import com.nju.onlineexam.service.QuestionExcelReader;
+import com.nju.onlineexam.util.FileHelper;
 import com.nju.onlineexam.vo.ChoiceVo;
 import com.nju.onlineexam.vo.QuestionVo;
 import org.springframework.beans.BeanUtils;
@@ -18,8 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
+
+import static com.nju.onlineexam.controller.Const.SUCC_RET;
 
 @RestController
 public class QuestionController {
@@ -36,13 +44,16 @@ public class QuestionController {
 
     @PostMapping("/course/{courseId}/question/upload")
     @Transactional
-    public List<QuestionVo> uploadExcel(@PathVariable int courseId, @RequestParam("file") MultipartFile file) throws IOException {
+    public List<QuestionVo> uploadExcel(@PathVariable int courseId, @RequestParam("fileName") String fileName)
+            throws IOException {
 
         if( ! courseRepo.existsById(courseId) ){
             throw new RuntimeException("courseId not exist:"+courseId);
         }
 
-        List<QuestionVo> questionVos = questionExcelReader.readExcel(file.getInputStream(),file.getOriginalFilename());
+        Path filePath = FileHelper.openFile(fileName);
+        FileInputStream iStream = new FileInputStream(filePath.toFile());
+        List<QuestionVo> questionVos = questionExcelReader.readExcel(iStream,fileName);
 
         CourseEntity courseEntity = courseRepo.getOne(courseId);
 
