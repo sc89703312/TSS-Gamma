@@ -17,6 +17,7 @@ public class ExamVo {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     Date endTime;
 
+    //考试是否结束
     boolean isFinish;
 
 }

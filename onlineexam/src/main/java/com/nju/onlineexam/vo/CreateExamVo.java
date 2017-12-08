@@ -13,11 +13,9 @@ public class CreateExamVo {
     @NotBlank
     String name;
 
-    @NotBlank
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     Date startTime;
 
-    @NotBlank
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     Date endTime;
 

@@ -17,7 +17,7 @@ public class StudentExamEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
 
-    int score;
+    Integer score;
 
     @ManyToOne
     StudentEntity student;
