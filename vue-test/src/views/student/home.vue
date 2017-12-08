@@ -1,7 +1,10 @@
 <template>
   <el-container>
     <!--头部-->
-    <el-header>TSS-Gamma</el-header>
+    <el-header>
+      TSS-Gamma
+      <router-link class="exit-link" :to="{name: 'Login'}">退出登录</router-link>
+    </el-header>
 
     <el-container>
       <!--侧边栏-->
@@ -75,9 +78,17 @@
     margin-right: 100px;
     /*max-height: 520px;*/
   }
+
+  .exit-link {
+    color: #fff;
+    text-decoration: none;
+    float: right;
+    font-size: 12px;
+  }
 </style>
 
 <script>
+  import ResourceStudent from '@/services/student'
   export default {
     name: 'StudentHome',
     data () {
@@ -97,11 +108,8 @@
       },
       fetchExamList () {
         // 将来会在这些方法里面做数据加载 调用services中文件
-        let data = [
-          {name: '考试1', index: '1', key: '1'},
-          {name: '考试2', index: '2', key: '2'}
-        ]
-        this.items = data
+        let id = this.$route.params.student_id
+        this.items = ResourceStudent.examList({studentId: id}).data
       },
       verifyExamCode () {
         console.log('exam code : ' + this.pwd)

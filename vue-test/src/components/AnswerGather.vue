@@ -16,6 +16,7 @@
           label="答案">
         </el-table-column>
       </el-table>
+      <el-button @click="submitAnswerPaper" class="submit-btn" type="danger">提交试卷</el-button>
     </div>
   </div>
 </template>
@@ -48,6 +49,11 @@
 
   .el-table .success-row {
     background: #f0f9eb;
+  }
+
+  .submit-btn {
+    margin-top: 32px;
+    float: right;
   }
 </style>
 
@@ -84,6 +90,9 @@
         } else {
           return 'warning-row'
         }
+      },
+      submitAnswerPaper () {
+        console.log('submit!')
       }
     },
     mounted () {
