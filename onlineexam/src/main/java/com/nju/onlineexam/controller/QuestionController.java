@@ -6,7 +6,6 @@ import com.nju.onlineexam.dao.QuestionRepo;
 import com.nju.onlineexam.entity.ChoiceEntity;
 import com.nju.onlineexam.entity.CourseEntity;
 import com.nju.onlineexam.entity.QuestionEntity;
-import com.nju.onlineexam.excel.ExcelHelper;
 import com.nju.onlineexam.service.QuestionExcelReader;
 import com.nju.onlineexam.vo.ChoiceVo;
 import com.nju.onlineexam.vo.QuestionVo;
@@ -19,12 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
-
-import static com.nju.onlineexam.controller.Const.SUCC_RET;
 
 @RestController
 public class QuestionController {
