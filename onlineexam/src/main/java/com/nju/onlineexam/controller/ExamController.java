@@ -120,7 +120,6 @@ public class ExamController {
     //应该有一个交卷的接口
     //考试中的逻辑可以前段完全控制
 
-
     private List<StudentExamEntity> getStudentList(String fileName){
         Path filePath = FileHelper.openFile(fileName);
         try {
