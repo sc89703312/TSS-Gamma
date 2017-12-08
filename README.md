@@ -73,7 +73,7 @@ POST
 
 | url | 用途 |
 |:-------------|:-------------|
-| [/teacher/:id/course](#courseList) | 老师查看自己的课程列表 |
+| [/teacher/:id/course](#courselist) | 老师查看自己的课程列表 |
 | [/teacher/:id/course](#createCourse) | 老师创建一门课程 |
 | [/course/:id/exam](#courseExamList) | 某一门课程的考试列表 |
 | [/course/:id/exam](#createCourseExam) | 创建某一门课程的考试 |
@@ -85,7 +85,7 @@ POST
 
 ## 与老师相关接口详情
 ---
-* #### courseList
+* #### courselist
 ##### 请求方法
 GET
 ##### 请求参数
