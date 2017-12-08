@@ -74,14 +74,14 @@ POST
 | url | 用途 |
 |:-------------|:-------------|
 | [/teacher/:id/course](#course_list) | 老师查看自己的课程列表 |
-| [/teacher/:id/course](#createCourse) | 老师创建一门课程 |
-| [/course/:id/exam](#courseExamList) | 某一门课程的考试列表 |
-| [/course/:id/exam](#createCourseExam) | 创建某一门课程的考试 |
-| [/exam/:id](#downLoadExam) | 下载某一门考试的试卷 |
-| [/exam/:id/student](#examStudentList) | 某一次考试的学生列表 |
-| [/exam/:id/papers](#downLoadStudentExamPaper) | 下载所有选中的学生考卷 |
-| [/course/:id/question](#uploadQuestion) | 上传某一门课程的题库 |
-| [/exam/:id/student](#uploadStudentList) | 上传某一次考试的考生列表 |
+| [/teacher/:id/course](#create_course) | 老师创建一门课程 |
+| [/course/:id/exam](#course_exam_list) | 某一门课程的考试列表 |
+| [/course/:id/exam](#create_course_exam) | 创建某一门课程的考试 |
+| [/exam/:id](#download_exam) | 下载某一门考试的试卷 |
+| [/exam/:id/student](#exam_student_list) | 某一次考试的学生列表 |
+| [/exam/:id/papers](#download_student_exam_paper) | 下载所有选中的学生考卷 |
+| [/course/:id/question](#upload_question) | 上传某一门课程的题库 |
+| [/exam/:id/student](#upload_studentList) | 上传某一次考试的考生列表 |
 
 ## 与老师相关接口详情
 ---
@@ -111,7 +111,7 @@ GET
 ```
 
 ---
-* #### createCourse
+* #### create_course
 ##### 请求方法
 POST
 ##### 请求参数
@@ -132,7 +132,7 @@ POST
 }
 ```
 ---
-* #### courseExamList
+* #### course_exam_list
 ##### 请求方法
 GET
 ##### 请求参数
@@ -159,7 +159,7 @@ GET
 }
 ```
 ---
-* #### createCourseExam
+* #### create_course_exam
 ##### 请求方法
 POST
 ##### 请求参数
@@ -184,7 +184,7 @@ POST
 ```
 
 ---
-* #### downLoadExam
+* #### download_exam
 ##### 请求方法
 POST
 ##### 请求参数
@@ -204,7 +204,7 @@ POST
 }
 ```
 ---
-* #### examStudentList
+* #### exam_student_list
 ##### 请求方法
 GET
 ##### 请求参数
@@ -229,7 +229,7 @@ GET
 }
 ```
 ---
-* #### downLoadStudentExamPaper
+* #### download_student_exam_paper
 ##### 请求方法
 POST
 ##### 请求参数
@@ -251,7 +251,7 @@ POST
 ```
 
 ---
-* #### uploadQuestion
+* #### upload_question
 ##### 请求方法
 POST
 ##### 请求参数
@@ -273,7 +273,7 @@ POST
 ```
 
 ---
-* #### uploadStudentList
+* #### upload_student_list
 ##### 请求方法
 POST
 ##### 请求参数
@@ -303,15 +303,15 @@ POST
 
 | url | 用途 |
 |:-------------|:-------------|
-| [/student/:id/exam](#studentExamList) | 某学生查看自己未参加的考试列表 |
-| [/student/:student_id/exam/:exam_id](#enterExam) | 某学生参加某次考试，输入验证码 |
-| [/exam/:id](#examInfo) | 获得某次考试的基本信息 | 
-| [/question/:id](#questionInfo) | 获得某道题目的信息 |
-| [/student/:student_id/exam/:exam_id/submit](#examSubmit) | 某学生提交某次试卷 |
+| [/student/:id/exam](#student_exam_list) | 某学生查看自己未参加的考试列表 |
+| [/student/:student_id/exam/:exam_id](#enter_exam) | 某学生参加某次考试，输入验证码 |
+| [/exam/:id](#exam_info) | 获得某次考试的基本信息 | 
+| [/question/:id](#question_info) | 获得某道题目的信息 |
+| [/student/:student_id/exam/:exam_id/submit](#exam_submit) | 某学生提交某次试卷 |
 
 ## 与学生相关接口详情
 ---
-* #### studentExamList
+* #### student_exam_list
 ##### 请求方法
 GET
 ##### 请求参数
@@ -337,7 +337,7 @@ GET
 ```
 
 ---
-* #### enterExam
+* #### enter_exam
 ##### 请求方法
 POST
 ##### 请求参数
@@ -358,7 +358,7 @@ POST
 ```
 
 ---
-* #### examInfo
+* #### exam_info
 ##### 请求方法
 GET
 ##### 请求参数
@@ -377,7 +377,7 @@ GET
 }
 ```
 ---
-* #### questionInfo
+* #### question_info
 ##### 请求方法
 GET
 ##### 请求参数
@@ -404,7 +404,7 @@ GET
 ```
 
 ---
-* #### examSubmit
+* #### exam_submit
 ##### 请求方法
 GET
 ##### 请求参数
