@@ -11,4 +11,5 @@ public interface StudentRepo extends JpaRepository<StudentEntity,Integer>{
 
     List<StudentEntity> findByEmailAndPassword(String email , String password);
 
+    StudentEntity findByEmail(String email);
 }
