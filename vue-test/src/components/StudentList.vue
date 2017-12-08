@@ -1,14 +1,7 @@
 <template>
   <div>
-    <el-row :gutter="80" type="flex" align="middle">
-      <el-col :span="2">
-        <h4 class="form-title">考卷生成</h4>
-      </el-col>
-      <el-col :span="20">
-        <span class="form-subtitle">选择考生，生成试卷</span>
-      </el-col>
-    </el-row>
-    <el-form ref="form" :model="form" label-width="80px" label-position="left">
+    <h4 class="form-title">考卷生成</h4>
+    <el-form class="exam-paper-el-form" ref="form" :model="form" label-width="80px" label-position="left">
       <el-form-item label="学生列表" class="last-form-item">
         <el-checkbox :indeterminate="form.isIndeterminate" v-model="form.checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <el-checkbox-group v-model="form.checkedStudents" @change="handleCheckedStudentsChange">
@@ -24,13 +17,11 @@
 </template>
 
 <style>
-  .el-form {
-    width: 480px;
+  .exam-paper-el-form {
+    width: 100%;
   }
 
   .form-title {
-    width: 68px;
-    max-width: 68px;
     text-align: left;
   }
   .form-subtitle {
@@ -48,6 +39,7 @@
 </style>
 
 <script>
+  import ResourceTeacher from '@/services/teacher'
   export default {
     name: 'StudentList',
     data () {
@@ -63,14 +55,8 @@
     methods: {
       fetchStudentList () {
         // 加载数据
-        let index = 0
-        for (;index < 10; index++) {
-          let item = {
-            id: index,
-            name: '张三'
-          }
-          this.form.students.push(item)
-        }
+        let examId = this.$route.params.exam_id
+        this.form.students = ResourceTeacher.examStudentList({examId: examId}).data
       },
       handleCheckAllChange (val) {
         this.form.checkedStudents = val ? this.form.students : []

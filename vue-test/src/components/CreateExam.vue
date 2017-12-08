@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 class="form-title">新建考试</h4>
-    <el-form ref="form" :model="form" label-width="80px" size="medium" label-position="left">
+    <el-form class="create-exam-el-form" ref="form" :model="form" label-width="80px" size="medium" label-position="left">
       <el-form-item label="考试名称">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -45,7 +45,7 @@
   </div>
 </template>
 <style>
-  .el-form {
+  .create-exam-el-form {
     width: 480px;
   }
 

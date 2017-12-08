@@ -86,7 +86,7 @@
     data () {
       return {
         timer: '',
-        answer: 1,
+        answer: 0,
         answerList: [],
         multiple: true,
         question: '',
@@ -101,7 +101,7 @@
       timerCal () {
         var date = new Date()
         var now = date.getTime()
-        var endDate = new Date('2017-11-12 23:23:23')
+        var endDate = new Date('2017-11-17 23:23:23')
         var end = endDate.getTime()
         var leftTime = end - now
         var h, m, s
@@ -197,6 +197,7 @@
         let questionList = this.$cookie.get('questionList').split(',')
         let currentIndex = questionList.indexOf(currentQId)
         let recordSelect = answerList[currentIndex]
+        console.log('recordSelect: ' + recordSelect)
         if (recordSelect === -1) {
           this.answer = 0
           this.answerList = []
@@ -221,9 +222,9 @@
       // 在该组件的生命周期内,可能需要根据url中的course_id加载多次数据
       // 需要使用watch监听route的变化 修改数据内容
       $route () {
+        this.fetchQuestionInfo()
         this.markDetected()
         this.selectDetected()
-        this.fetchQuestionInfo()
 //        this.answerCardDetected()
       }
     },
@@ -263,9 +264,9 @@
     },
     mounted () {
       this.timerCal()
+      this.fetchQuestionInfo()
       this.markDetected()
       this.selectDetected()
-      this.fetchQuestionInfo()
 //      this.answerCardDetected()
     }
   }

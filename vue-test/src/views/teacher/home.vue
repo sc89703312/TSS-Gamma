@@ -1,7 +1,10 @@
 <template>
   <el-container>
     <!--头部-->
-    <el-header>TSS-Gamma</el-header>
+    <el-header>
+      TSS-Gamma
+      <router-link class="exit-link" :to="{name: 'Login'}">退出登录</router-link>
+    </el-header>
 
     <el-container>
       <!--侧边栏-->
@@ -70,11 +73,18 @@
   .mail-container {
     margin-left: 100px;
     margin-right: 100px;
-    max-height: 520px;
+  }
+
+  .exit-link {
+    color: #fff;
+    text-decoration: none;
+    float: right;
+    font-size: 12px;
   }
 </style>
 
 <script>
+  import ResourceTeacher from '@/services/teacher'
   export default {
     name: 'TeacherHome',
     data () {
@@ -93,11 +103,8 @@
       },
       fetchCourseList () {
         // 将来会在这些方法里面做数据加载 调用services中文件
-        let data = [
-          {name: '课程1', index: '1', key: '1'},
-          {name: '课程2', index: '2', key: '2'}
-        ]
-        this.items = data
+        let res = ResourceTeacher.courseList({teacherId: 1})
+        this.items = res.data
       }
     },
     mounted () {
