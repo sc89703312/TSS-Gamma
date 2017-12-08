@@ -32,7 +32,7 @@ public class ExcelHelper {
      * @param mapper    转化回调
      * @return  转化后的vo列表
      */
-    public <T> List<T> convertToVo(InputStream iStream, String fileName, int startRow , Function<List<String>, T> mapper){
+    public <T> List<T> convertToObj(InputStream iStream, String fileName, int startRow , Function<List<String>, T> mapper){
         Workbook workBook = null;
 
         try{

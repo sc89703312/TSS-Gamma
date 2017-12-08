@@ -10,10 +10,14 @@ public class ExamVo {
 
     int id;
     String name;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     Date startTime;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     Date endTime;
+
+    //考试是否结束
     boolean isFinish;
 
 }

@@ -18,7 +18,7 @@ public class QuestionExcelReader {
 
     public List<QuestionVo> readExcel(InputStream excelInputStream,String fileName){
         List<QuestionVo> questionVos =
-                excelHelper.convertToVo(excelInputStream,fileName,1,list ->{
+                excelHelper.convertToObj(excelInputStream,fileName,1, list ->{
 
                     if(list.size() < 3){
                         throw new RuntimeException("information not enough:"+list.toString());
