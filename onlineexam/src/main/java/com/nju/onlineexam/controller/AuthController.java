@@ -6,7 +6,6 @@ import com.nju.onlineexam.entity.StudentEntity;
 import com.nju.onlineexam.entity.TeacherEntity;
 import com.nju.onlineexam.model.LoginParam;
 import com.nju.onlineexam.model.RegisterParam;
-import com.nju.onlineexam.model.ResponseBase;
 import com.nju.onlineexam.service.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RestController
 public class AuthController {
