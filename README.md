@@ -53,7 +53,7 @@ POST
 {
     "id": 0,
     "type": 0|1,
-    "e-mail": xxxx,
+    "email": xxxx,
     "name": xxxx
 }
 ```
