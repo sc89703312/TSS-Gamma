@@ -13,3 +13,6 @@ spring:
     properties:
       hibernate:
         dialect: com.enigmabridge.hibernate.dialect.SQLiteDialect
+email:
+  from-addr: 13260905180@163.com
+  subject: 考试通知

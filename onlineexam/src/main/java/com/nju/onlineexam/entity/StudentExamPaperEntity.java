@@ -12,11 +12,7 @@ public class StudentExamPaperEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
 
-    String choiceMap;
-
     String selected;
-
-    boolean isMarked;
 
     @ManyToOne
     QuestionEntity question;
