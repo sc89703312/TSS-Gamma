@@ -26,54 +26,52 @@ public class AuthController {
     TeacherRepo teacherRepo;
 
     @PostMapping("/login")
-    public ResponseBase login(@RequestBody LoginParam loginParam , HttpSession httpSession){
-        List<StudentEntity> students = studentRepo.findByEmailAndPassword(loginParam.email, loginParam.password);
-        if(students != null && students.size() > 0){
-            httpSession.setAttribute(Config.USER_KEY , students.get(0));
+    public void login(@RequestBody LoginParam loginParam , HttpSession httpSession){
+
+        StudentEntity student = studentRepo.findByEmail(loginParam.email);
+        TeacherEntity teacher = teacherRepo.findByEmail(loginParam.email);
+        if(student == null && teacher == null){
+            throw new RuntimeException("账号不存在");
+        }
+
+        student = studentRepo.findByEmailAndPassword(loginParam.email, loginParam.password);
+        if(student != null ){
+            httpSession.setAttribute(Config.USER_KEY , student);
             httpSession.setAttribute(Config.ROLE_KEY , Const.STUDENT);
-            return  new ResponseBase(Const.SUCC_RET, null , null );
         }else{
-            List<TeacherEntity> teachers = teacherRepo.findByEmailAndPassword(loginParam.email, loginParam.password);
-            if(teachers != null && teachers.size() > 0){
-                httpSession.setAttribute(Config.USER_KEY , teachers.get(0));
+            teacher = teacherRepo.findByEmailAndPassword(loginParam.email, loginParam.password);
+            if(teacher != null){
+                httpSession.setAttribute(Config.USER_KEY , teacher);
                 httpSession.setAttribute(Config.ROLE_KEY , Const.TEACHER);
-                return  new ResponseBase(Const.SUCC_RET, null , null );
             }else {
-                return  new ResponseBase(Const.FAIL_RET , "找不到该账号" , null);
+                throw new RuntimeException("密码错误");
             }
         }
     }
 
     @PostMapping("/register")
-    public ResponseBase register(@RequestBody RegisterParam registerParam){
-        List<StudentEntity> students = studentRepo.findByEmailAndPassword(registerParam.email, registerParam.password);
-        List<TeacherEntity> teachers = teacherRepo.findByEmailAndPassword(registerParam.email, registerParam.password);
-        if(( students != null && students.size() > 0)|| (teachers != null && teachers.size() > 0 )){
-            return new ResponseBase(Const.FAIL_RET , "已经存在相同邮箱的账号" , null);
+    public void register(@RequestBody RegisterParam registerParam){
+        StudentEntity student = studentRepo.findByEmail(registerParam.email);
+        TeacherEntity teacher = teacherRepo.findByEmail(registerParam.email);
+        if( student != null || teacher != null ){
+            throw new RuntimeException("该邮箱已注册");
         }
 
         if(registerParam.role == Const.STUDENT){
-
             StudentEntity studentEntity = new StudentEntity();
             studentEntity.setName(registerParam.name);
             studentEntity.setEmail(registerParam.email);
             studentEntity.setPassword(registerParam.password);
             studentEntity.setNumber(registerParam.number);
             studentRepo.save(studentEntity);
-            return  new ResponseBase(Const.SUCC_RET, null , null );
-
-
         }else if(registerParam.role == Const.TEACHER){
-
             TeacherEntity teacherEntity = new TeacherEntity();
             teacherEntity.setName(registerParam.name);
             teacherEntity.setEmail(registerParam.email);
             teacherEntity.setPassword(registerParam.password);
             teacherRepo.save(teacherEntity);
-            return  new ResponseBase(Const.SUCC_RET, null , null );
-
         }else {
-            return new ResponseBase(Const.FAIL_RET , "角色类型不匹配:"+registerParam.role , null);
+            throw new RuntimeException("未知的角色类型");
         }
 
     }
