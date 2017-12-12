@@ -1,10 +1,8 @@
-// import Axios from 'axios'
+import Axios from 'axios'
 
 export default {
-  login ({username, password}) {
-    return {
-      data: {}
-    }
+  login (params) {
+    return Axios.post('/login', params)
   },
   register ({type, username, email, password}) {
     return {

@@ -42,7 +42,7 @@ export default {
       }
     }
   },
-  courseExamCreate ({courseName, startTime, endTime, studentListFileId, scoreList}) {
+  courseExamCreate ({examName, startTime, endTime, studentListFileId, scoreList}) {
     return {
       data: {}
     }

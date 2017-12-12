@@ -7,8 +7,10 @@
       <el-col>
         <el-upload
           class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false">
+          action="http://localhost:8080/file/upload"
+          :show-file-list="false"
+          :on-success="uploadSuccess"
+          :on-error="uploadFail">
           <el-button icon="el-icon-upload" size="small" type="primary">上传题库</el-button>
         </el-upload>
       </el-col>
@@ -69,6 +71,22 @@
 
       uploadQuestion () {
         console.log('导入题库')
+      },
+
+      uploadSuccess (res, file, fileList) {
+        console.log(res)
+        this.$message({
+          message: '文件 ' + res + ' 上传成功',
+          type: 'success'
+        })
+      },
+
+      uploadFail (res, file, fileList) {
+        console.log(res)
+        this.$message({
+          message: res,
+          type: 'error'
+        })
       },
 
       viewExam (row) {

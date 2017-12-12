@@ -13,6 +13,9 @@
           <el-form-item label="用户名称">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
+          <el-form-item v-if="userType" label="学号">
+            <el-input v-model="form.number"></el-input>
+          </el-form-item>
           <el-form-item label="注册邮箱">
             <el-input v-model="form.email"></el-input>
           </el-form-item>
@@ -22,6 +25,7 @@
           <el-button @click="registerAndLogin" class="verify-btn" type="primary">
             注册并登录
           </el-button>
+          <router-link class="register-link" :to="{name: 'Login'}">已有账户,直接登陆</router-link>
         </el-form>
       </div>
     </el-card>
@@ -58,6 +62,7 @@
   .verify-btn {
     width: 100%;
     margin-top: 15px;
+    margin-bottom: 10px;
   }
 
   .verify-title {
@@ -77,7 +82,8 @@
           name: '',
           region: '',
           type: '学生',
-          email: ''
+          email: '',
+          number: ''
         }
       }
     },
@@ -88,6 +94,11 @@
         } else {
           this.$router.push({name: 'TeacherHome'})
         }
+      }
+    },
+    computed: {
+      userType: function () {
+        return this.form.type === '学生'
       }
     }
   }
