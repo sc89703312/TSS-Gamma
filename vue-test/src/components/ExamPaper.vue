@@ -101,7 +101,7 @@
       timerCal () {
         var date = new Date()
         var now = date.getTime()
-        var endDate = new Date('2017-11-17 23:23:23')
+        var endDate = new Date('2017-12-8 23:23:23')
         var end = endDate.getTime()
         var leftTime = end - now
         var h, m, s

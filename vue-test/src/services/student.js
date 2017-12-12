@@ -24,7 +24,7 @@ export default {
       data: {}
     }
   },
-  examSumbit ({studentId, examId, answerList}) {
+  examSubmit ({studentId, examId, answerList}) {
     return {
       data: {}
     }
