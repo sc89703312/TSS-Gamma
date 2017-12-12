@@ -74,7 +74,7 @@ POST
 | [/exam/:id/student](#exam_student_list) | 某一次考试的学生列表 |
 | [/exam/:id/papers](#download_student_exam_paper) | 下载所有选中的学生考卷 |
 | [/course/:id/question](#upload_question) | 上传某一门课程的题库 |
-| [/exam/:id/student](#upload_student_list) | 上传某一次考试的考生列表 |
+| [/exam/:id/student](#upload_file) | 上传文件(通用) |
 
 ## 与老师相关接口详情
 ---
