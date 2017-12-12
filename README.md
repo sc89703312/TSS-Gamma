@@ -169,7 +169,7 @@ POST
 | examName | string |  |
 | startTime | string |  |
 | endTime | string |  |
-| studentListFileId | int | 上传完学生列表的文件，后台将列表文件存储，并为其编号，将编号结果返回给前端 |
+| studentListFile | string | 学生列表文件名 |
 | scoreList | arr | 分值列表，代表每道题设置的分值，列表项总数代表题目总数 |
 
 
@@ -259,7 +259,7 @@ POST
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
 | courseId | int |  |
-| questionFile | file |  |
+| questionFile | string |  |
 
 
 ##### 返回结果
@@ -281,7 +281,7 @@ POST
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
 | examId | int |  |
-| studentListFile | file |  |
+| studentListFile | string |  |
 
 
 ##### 返回结果
@@ -413,7 +413,11 @@ GET
 |:-------------|:-------------|:-------------|
 | student_id | int | |
 | exam_id | int | |
-| answer | arr | 答题卡，单选题答案为单个数字，多选题答案为数组，如果未作答则为 -1,形如 [1, 1, 2, [1, 3], [2, 4], 4, 2] |
+| answer | obj | 答题卡，单选题答案为单个数字，多选题答案为数组，如果未作答则为 -1,形如 
+{
+   1 : [2,4],  // questionId, [choiceId...]
+   2 : [5],
+}  |
 
 ##### 返回结果
 ```
