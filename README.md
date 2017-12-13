@@ -14,6 +14,7 @@
 5. exam_info返回值中添加更多信息，如开始时间，结束时间，考试名称
 6. question_info返回值中，question添加`id`字段，`question`字段改为`description`。`optionList`改为`choiceList`,choice的`content`改为`description`。
 7. upload_file接口中，参数`upload_file`改名为`file`
+8. download_exam下载某一门考试的试卷的url从`/exam/:id`改为`/exam/:id/download`.
 
 ## 认证
    
@@ -23,8 +24,8 @@
 
 | url | 用途 |
 |:-------------|:-------------|
-| [/login](#login) | 用户登陆 |
-| [/register](#register) | 用户注册 |
+| [/login](#login) `done` | 用户登陆 |
+| [/register](#register) `done` | 用户注册 |
 
 
 ## 认证接口详情
@@ -82,15 +83,15 @@ POST
 
 | url | 用途 |
 |:-------------|:-------------|
-| [/teacher/:id/course](#course_list) | 老师查看自己的课程列表 |
-| [/teacher/:id/course](#create_course) | 老师创建一门课程 |
+| [/teacher/:id/course](#course_list) `done` | 老师查看自己的课程列表 |
+| [/teacher/:id/course](#create_course) `done` | 老师创建一门课程 |
 | [/course/:id/exam](#course_exam_list) | 某一门课程的考试列表 |
 | [/course/:id/exam](#create_course_exam) | 创建某一门课程的考试 |
-| [/exam/:id](#download_exam) | 下载某一门考试的试卷 |
+| [/exam/:id/download](#download_exam) | 下载某一门考试的试卷 |
 | [/exam/:id/student](#exam_student_list) | 某一次考试的学生列表 |
 | [/exam/:id/papers](#download_student_exam_paper) | 下载所有选中的学生考卷 |
 | [/course/:id/question](#upload_question) | 上传某一门课程的题库 |
-| [file/upload](#upload_file) | 上传文件(通用) |
+| [file/upload](#upload_file) `done` | 上传文件(通用) |
 
 ## 与老师相关接口详情
 ---
