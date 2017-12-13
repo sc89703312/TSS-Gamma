@@ -1,5 +1,20 @@
 # TSS-Gamma 前后端对接api
 
+## 修改历史
+1. 创建考试的返回值，参数`courseName`改为`name`
+2. 上传文件url改为`file/upload`
+3. 各类返回的json为列表的，直接返回列表，比如
+```js
+[
+   {"name":"aa"},
+   .....
+]
+```
+4. 传参和返回值默认都按json传，即使只有一个参数或者返回值。上传文件接口除外，那个需要用表单传参。
+5. exam_info返回值中添加更多信息，如开始时间，结束时间，考试名称
+6. question_info返回值中，question添加`id`字段，`question`字段改为`description`。`optionList`改为`choiceList`,choice的`content`改为`description`。
+7. upload_file接口中，参数`upload_file`改名为`file`
+
 ## 认证
    
 ---
@@ -75,7 +90,7 @@ POST
 | [/exam/:id/student](#exam_student_list) | 某一次考试的学生列表 |
 | [/exam/:id/papers](#download_student_exam_paper) | 下载所有选中的学生考卷 |
 | [/course/:id/question](#upload_question) | 上传某一门课程的题库 |
-| [/exam/:id/student](#upload_file) | 上传文件(通用) |
+| [file/upload](#upload_file) | 上传文件(通用) |
 
 ## 与老师相关接口详情
 ---
@@ -90,14 +105,13 @@ GET
 
 ##### 返回结果
 ```
-{
-    "courseList": [
-      {
-        "id": 0,
-        "name": xxx
-      }
-    ]
-}
+[
+  {
+     "id": 0,
+     "name": xxx
+  }
+]
+
 ```
 
 ---
@@ -127,16 +141,15 @@ GET
 
 ##### 返回结果
 ```
-{
-    "examList": [
-      {
-        "id": 0,
-        "name": xxx,
-        "startTime": xxx,
-        "endTime": xxx
-      }
-    ]
-}
+[
+   {
+     "id": 0,
+     "name": xxx,
+     "startTime": xxx,
+     "endTime": xxx
+   }
+]
+
 ```
 ---
 * #### create_course_exam
@@ -185,14 +198,13 @@ GET
 
 ##### 返回结果
 ```
-{
-     "studentList": [
-      {
-        "id": 0,
-        "name": xxx
-      }
-    ]
-}
+[
+   {
+     "id": 0,
+     "name": xxx
+   }
+]
+
 ```
 ---
 * #### download_student_exam_paper
@@ -235,7 +247,7 @@ POST
 ##### 请求参数
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
-| upload_file | file |  |
+| file | file |  |
 
 
 ##### 返回结果
@@ -273,14 +285,12 @@ GET
 
 ##### 返回结果
 ```
-{
-    "examList": [
-      {
-        "id": 0,
-        "name": xxx
-      }
-    ]
-}
+[
+   {
+     "id": 0,
+     "name": xxx
+   }
+]
 ```
 
 ---
@@ -311,7 +321,10 @@ GET
 ##### 返回结果
 ```
 {
-    "questionIdList": [1, 2, 3]
+    "name": xxx,
+    "startTime": "yyyy-MM-dd hh:mm:ss",
+    "endTime": "yyyy-MM-dd hh:mm:ss",
+    "questionIdList": [1, 2, 3]
 }
 ```
 ---
@@ -326,12 +339,13 @@ GET
 ##### 返回结果
 ```
 {
-    "question": xxxx,
+    "id": 0
+    "description": xxxx,
     "type": 0(单选) | 1(多选),
-    "optionList": [
+    "choiceList": [
       {
         "id": 0,
-        "content": xxx
+        "description": xxx
       }
     ]
 }
