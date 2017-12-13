@@ -2,6 +2,7 @@ package com.nju.onlineexam.vo;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,9 +13,13 @@ public class QuestionInfoVo {
     List<Option> optionList;
 
 
-    private class Option {
+    public QuestionInfoVo(){
+        this.optionList = new ArrayList<>();
+    }
+
+
+    public static class Option {
         public int id;
         public String content;
-
     }
 }
