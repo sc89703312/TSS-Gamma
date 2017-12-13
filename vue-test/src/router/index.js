@@ -17,7 +17,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/teacher',
+      path: '/teacher/:teacher_id',
       name: 'TeacherHome',
       component: TeacherHome,
       children: [

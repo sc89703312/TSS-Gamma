@@ -20,7 +20,7 @@
             <el-input v-model="form.email"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input type="password" v-model="form.region"></el-input>
+            <el-input type="password" v-model="form.password"></el-input>
           </el-form-item>
           <el-button @click="registerAndLogin" class="verify-btn" type="primary">
             注册并登录
@@ -74,13 +74,15 @@
 </style>
 
 <script>
+  import ResourceVerify from '@/services/verify'
+  import { Message } from 'element-ui'
   export default {
     name: 'Register',
     data () {
       return {
         form: {
           name: '',
-          region: '',
+          password: '',
           type: '学生',
           email: '',
           number: ''
@@ -89,11 +91,35 @@
     },
     methods: {
       registerAndLogin () {
-        if (this.form.type === '学生') {
-          this.$router.push({name: 'StudentHome', params: {student_id: 1}})
-        } else {
-          this.$router.push({name: 'TeacherHome'})
+//        if (this.form.type === '学生') {
+//          this.$router.push({name: 'StudentHome', params: {student_id: 1}})
+//        } else {
+//          this.$router.push({name: 'TeacherHome'})
+//        }
+        let params = {
+          email: this.form.email,
+          password: this.form.password,
+          role: this.form.type === '学生' ? 0 : 1,
+          name: this.form.name
         }
+        if (this.form.type === '学生') {
+          params.number = this.form.number
+        }
+        ResourceVerify.register(params).then((res) => {
+          if (this.form.type === '学生') {
+            this.$router.push({name: 'StudentHome', params: {student_id: 1}})
+          } else {
+            this.$router.push({name: 'TeacherHome', params: {teacher_id: 1}})
+          }
+          this.$cookie.set('user_id', 1)
+        }).catch((err) => {
+          console.log('err')
+          let errMsg = err.response.data.message
+          let options = {
+            message: errMsg
+          }
+          Message.error(options)
+        })
       }
     },
     computed: {

@@ -4,9 +4,7 @@ export default {
   login (params) {
     return Axios.post('/login', params)
   },
-  register ({type, username, email, password}) {
-    return {
-      data: {}
-    }
+  register (params) {
+    return Axios.post('/register', params)
   }
 }

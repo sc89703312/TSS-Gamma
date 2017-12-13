@@ -1,13 +1,12 @@
-// import Axios from 'axios'
+import Axios from 'axios'
 
 export default {
   courseList ({teacherId}) {
-    return {
-      data: [
-        {name: '软件工程与计算I', index: '1', key: '1'},
-        {name: '软件过程管理', index: '2', key: '2'}
-      ]
-    }
+    return Axios.get('/course', {
+      headers: {
+        UserId: teacherId
+      }
+    })
   },
   createCourse ({teacherId, courseName}) {
     return {

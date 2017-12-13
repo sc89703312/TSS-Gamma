@@ -103,8 +103,23 @@
       },
       fetchCourseList () {
         // 将来会在这些方法里面做数据加载 调用services中文件
-        let res = ResourceTeacher.courseList({teacherId: 1})
-        this.items = res.data
+        let teacherId = parseInt(this.$cookie.get('user_id'))
+        ResourceTeacher.courseList({teacherId: teacherId}).then((res) => {
+          let courseList = res.data
+          courseList.map((obj) => {
+            this.items.push({
+              id: obj.id,
+              name: obj.name,
+              index: obj.id + ''
+            })
+          })
+        }).catch((err) => {
+          console.log(err)
+          this.$message({
+            message: '课程数据加载失败',
+            type: 'error'
+          })
+        })
       }
     },
     mounted () {

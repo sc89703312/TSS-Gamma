@@ -90,19 +90,19 @@
     },
     methods: {
       login () {
-//        <!--if (this.form.name === '1') {-->
-//          <!--this.$router.push({name: 'TeacherHome'})-->
-//        <!--} else {-->
-//          <!--this.$router.push({name: 'StudentHome', params: {student_id: 1}})-->
-//        <!--}-->
         let params = {
           email: this.form.email,
           password: this.form.password
         }
-        ResourceVerify.login(params).then(function (res) {
+        ResourceVerify.login(params).then((res) => {
           console.log('success')
-          console.log(res)
-        }).catch(function (err) {
+          if (params.email === '1111@nju.edu.cn') {
+            this.$router.push({name: 'TeacherHome', params: {teacher_id: 1}})
+          } else {
+            this.$router.push({name: 'StudentHome', params: {student_id: 1}})
+          }
+          this.$cookie.set('user_id', 1)
+        }).catch((err) => {
           console.log('err')
           let errMsg = err.response.data.message
           let options = {
