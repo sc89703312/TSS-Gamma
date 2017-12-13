@@ -20,21 +20,17 @@ POST
 ##### 请求参数
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
-| mail | string | 邮箱 |
+| email | string | 邮箱 |
 | password | string |  |
 
 
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "id": 0,
     "type": 0|1,
-    "e-mail": xxxx,
+    "email": xxxx,
     "name": xxxx
-  }
 }
 ```
 
@@ -46,7 +42,7 @@ POST
 ##### 请求参数
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
-| mail | string | 邮箱 |
+| email | string | 邮箱 |
 | password | string |  |
 | type | int | 0代表学生，1代表老师 |
 | name | string | 用户姓名 |
@@ -55,14 +51,10 @@ POST
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "id": 0,
     "type": 0|1,
-    "e-mail": xxxx,
+    "email": xxxx,
     "name": xxxx
-  }
 }
 ```
 
@@ -82,7 +74,7 @@ POST
 | [/exam/:id/student](#exam_student_list) | 某一次考试的学生列表 |
 | [/exam/:id/papers](#download_student_exam_paper) | 下载所有选中的学生考卷 |
 | [/course/:id/question](#upload_question) | 上传某一门课程的题库 |
-| [/exam/:id/student](#upload_student_list) | 上传某一次考试的考生列表 |
+| [/exam/:id/student](#upload_file) | 上传文件(通用) |
 
 ## 与老师相关接口详情
 ---
@@ -98,16 +90,12 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "courseList": [
       {
         "id": 0,
         "name": xxx
       }
     ]
-  }
 }
 ```
 
@@ -124,13 +112,7 @@ POST
 
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    
-  }
-}
+{}
 ```
 ---
 * #### course_exam_list
@@ -145,9 +127,6 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "examList": [
       {
         "id": 0,
@@ -156,7 +135,6 @@ GET
         "endTime": xxx
       }
     ]
-  }
 }
 ```
 ---
@@ -175,13 +153,7 @@ POST
 
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
- 
-  }
-}
+{}
 ```
 
 ---
@@ -197,11 +169,7 @@ POST
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
      "fileUrl": xxxx
-  }
 }
 ```
 ---
@@ -217,16 +185,12 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
      "studentList": [
       {
         "id": 0,
         "name": xxx
       }
     ]
-  }
 }
 ```
 ---
@@ -243,11 +207,7 @@ POST
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
      "fileUrl": xxxx
-  }
 }
 ```
 
@@ -264,34 +224,23 @@ POST
 
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-     
-  }
-}
+{}
 ```
 
 ---
-* #### upload_student_list
+* #### upload_file
 ##### 请求方法
 POST
 ##### 请求参数
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
-| examId | int |  |
-| studentListFile | string |  |
+| upload_file | file |  |
 
 
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
-     "id": 0
-  }
+   "filename": xxx
 }
 ```
 
@@ -324,16 +273,12 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "examList": [
       {
         "id": 0,
         "name": xxx
       }
     ]
-  }
 }
 ```
 
@@ -350,12 +295,7 @@ POST
 
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-  }
-}
+{}
 ```
 
 ---
@@ -370,11 +310,7 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "questionIdList": [1, 2, 3]
-  }
 }
 ```
 ---
@@ -389,9 +325,6 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "question": xxxx,
     "type": 0(单选) | 1(多选),
     "optionList": [
@@ -400,7 +333,6 @@ GET
         "content": xxx
       }
     ]
-  }
 }
 ```
 
@@ -422,13 +354,7 @@ GET
 ```
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-   
-  }
-}
+{}
 ```
 
 
