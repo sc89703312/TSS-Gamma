@@ -20,7 +20,7 @@ public class CreateExamVo {
     Date endTime;
 
     @NotBlank
-    String studentsFile; //学生列表excel
+    String studentListFile; //学生列表excel
 
     List<Integer> scoreList; //题目的分数
 

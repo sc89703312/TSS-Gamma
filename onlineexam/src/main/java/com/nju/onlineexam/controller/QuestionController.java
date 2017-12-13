@@ -91,6 +91,7 @@ public class QuestionController {
         }
 
         QuestionInfoVo questionInfoVo = new QuestionInfoVo();
+        questionInfoVo.setId(questionEntity.getId());
         questionInfoVo.setQuestion(questionEntity.getDescription());
 
         Long answerCnt = questionRepo.countAnswers(id);

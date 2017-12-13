@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class QuestionInfoVo {
 
+    int id;
     String question;
     int type;
     List<Option> optionList;

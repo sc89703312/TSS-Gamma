@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class ExamVo {
@@ -17,7 +18,6 @@ public class ExamVo {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     Date endTime;
 
-    //考试是否结束
-    boolean isFinish;
+    List<Integer> questionList;
 
 }
