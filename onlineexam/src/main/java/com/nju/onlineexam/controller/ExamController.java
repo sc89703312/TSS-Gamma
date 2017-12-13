@@ -9,8 +9,10 @@ import com.nju.onlineexam.entity.ExamEntity;
 import com.nju.onlineexam.entity.StudentExamEntity;
 import com.nju.onlineexam.service.ExamService;
 import com.nju.onlineexam.service.StudentExcelReader;
+import com.nju.onlineexam.util.DataConverter;
 import com.nju.onlineexam.util.FileHelper;
 import com.nju.onlineexam.vo.CreateExamVo;
+import com.nju.onlineexam.vo.EnterExamParam;
 import com.nju.onlineexam.vo.ExamVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +76,7 @@ public class ExamController {
      * @param createExamVo
      * @return
      */
-    @PostMapping("/course/{courseId}/exam/create")
+    @PostMapping("/course/{courseId}/exam")
     @Transactional
     public ExamVo createExam(@PathVariable int courseId,
                            @RequestBody @Valid CreateExamVo createExamVo){
@@ -93,24 +95,19 @@ public class ExamController {
         examRepo.save(examEntity);
 
         //解析excel，创建考生
-        List<StudentExamEntity> studentExamList = getStudentList(createExamVo.getStudentsFile());
+        List<StudentExamEntity> studentExamList = getStudentList(createExamVo.getStudentListFile());
         studentExamList.forEach(s->s.setExam(examEntity));
         studentExamRepo.saveAll(studentExamList);
 
         //随机选出考题
         examService.selectExamQuestion(examEntity,createExamVo.getScoreList());
 
-        // TODO: 2017/12/8 初始化student_exam_paper
-
-        return convertToVo(examEntity);
+        return DataConverter.convertToExamVo(examEntity);
     }
 
     private String getExamPassword(){
         return "password"+(new Random().nextInt(10000));
     }
-
-    //应该有一个交卷的接口
-    //考试中的逻辑可以前段完全控制
 
     private List<StudentExamEntity> getStudentList(String fileName){
         Path filePath = FileHelper.openFile(fileName);
@@ -126,21 +123,15 @@ public class ExamController {
 
     }
 
-    private ExamVo convertToVo(ExamEntity examEntity){
-        ExamVo examVo = new ExamVo();
-        examVo.setId(examEntity.getId());
-        examVo.setName(examEntity.getName());
-        examVo.setStartTime(examEntity.getStartTime());
-        examVo.setEndTime(examEntity.getEndTime());
-        examVo.setFinish(false);
-        return examVo;
-    }
-
-
     @GetMapping("/exam/{id}")
-    public List<Integer> getExamInfo(@PathVariable int id){
-        return this.examRepo.findQuestionIdListByExamId(id);
-    }
+    @Transactional
+    public ExamVo getExamInfo(@PathVariable int id){
 
+        ExamEntity examEntity = examRepo.findById(id).get();
+        ExamVo examVo = DataConverter.convertToExamVo(examEntity);
+        examVo.setQuestionList(examRepo.findQuestionIdListByExamId(id));
+        return examVo;
+
+    }
 
 }

@@ -14,6 +14,8 @@ public interface StudentExamRepo extends JpaRepository<StudentExamEntity,Integer
 
     List<StudentExamEntity> findByExamId(int examId);
 
-    @Query("select e from student_exam se , exam e where se.s = ?1 and score is null and e.id = se.exam_id ")
+    @Query("select e from student_exam se , exam e where se.student.id = ?1 and score is null and e.id = se.exam.id ")
     List<ExamEntity> findUnattendedExams(int stdId);
+
+    StudentExamEntity findByExamIdAndStudentId(int examId,int studentId);
 }
