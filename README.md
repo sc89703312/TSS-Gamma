@@ -46,6 +46,7 @@ POST
 | password | string |  |
 | type | int | 0代表学生，1代表老师 |
 | name | string | 用户姓名 |
+| number | string | 当注册账号为学生时，需要填写学号 |
 
 
 ##### 返回结果
