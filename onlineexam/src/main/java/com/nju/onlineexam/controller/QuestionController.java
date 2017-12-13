@@ -9,13 +9,11 @@ import com.nju.onlineexam.entity.QuestionEntity;
 import com.nju.onlineexam.service.QuestionExcelReader;
 import com.nju.onlineexam.util.FileHelper;
 import com.nju.onlineexam.vo.ChoiceVo;
+import com.nju.onlineexam.vo.QuestionInfoVo;
 import com.nju.onlineexam.vo.QuestionVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.io.FileInputStream;
@@ -79,6 +77,11 @@ public class QuestionController {
         }
 
         return questionVo;
+    }
+
+    @GetMapping("/question/{id}")
+    public QuestionInfoVo getQuestionInfo(@PathVariable int id){
+        return new QuestionInfoVo();
     }
 
 }

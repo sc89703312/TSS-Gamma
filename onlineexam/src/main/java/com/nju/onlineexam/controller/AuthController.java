@@ -7,6 +7,7 @@ import com.nju.onlineexam.entity.TeacherEntity;
 import com.nju.onlineexam.model.LoginParam;
 import com.nju.onlineexam.model.RegisterParam;
 import com.nju.onlineexam.service.Config;
+import com.nju.onlineexam.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class AuthController {
     TeacherRepo teacherRepo;
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginParam loginParam , HttpSession httpSession){
+    public UserVo login(@RequestBody LoginParam loginParam , HttpSession httpSession){
 
         StudentEntity student = studentRepo.findByEmail(loginParam.email);
         TeacherEntity teacher = teacherRepo.findByEmail(loginParam.email);
@@ -34,13 +35,11 @@ public class AuthController {
 
         student = studentRepo.findByEmailAndPassword(loginParam.email, loginParam.password);
         if(student != null ){
-            httpSession.setAttribute(Config.USER_KEY , student);
-            httpSession.setAttribute(Config.ROLE_KEY , Const.STUDENT);
+            return  new UserVo(student.getId(),Const.STUDENT,student.getEmail(),student.getName());
         }else{
             teacher = teacherRepo.findByEmailAndPassword(loginParam.email, loginParam.password);
             if(teacher != null){
-                httpSession.setAttribute(Config.USER_KEY , teacher);
-                httpSession.setAttribute(Config.ROLE_KEY , Const.TEACHER);
+                return  new UserVo(teacher.getId(),Const.TEACHER,teacher.getEmail(),teacher.getName());
             }else {
                 throw new RuntimeException("密码错误");
             }
@@ -48,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody RegisterParam registerParam){
+    public UserVo register(@RequestBody RegisterParam registerParam){
         StudentEntity student = studentRepo.findByEmail(registerParam.email);
         TeacherEntity teacher = teacherRepo.findByEmail(registerParam.email);
         if( student != null || teacher != null ){
@@ -62,12 +61,16 @@ public class AuthController {
             studentEntity.setPassword(registerParam.password);
             studentEntity.setNumber(registerParam.number);
             studentRepo.save(studentEntity);
+            studentEntity = studentRepo.findByEmail(registerParam.email);
+            return  new UserVo(studentEntity.getId(),Const.STUDENT,studentEntity.getEmail(),studentEntity.getName());
         }else if(registerParam.role == Const.TEACHER){
             TeacherEntity teacherEntity = new TeacherEntity();
             teacherEntity.setName(registerParam.name);
             teacherEntity.setEmail(registerParam.email);
             teacherEntity.setPassword(registerParam.password);
             teacherRepo.save(teacherEntity);
+            teacherEntity = teacherRepo.findByEmail(registerParam.email);
+            return  new UserVo(teacherEntity.getId(),Const.TEACHER,teacherEntity.getEmail(),teacherEntity.getName());
         }else {
             throw new RuntimeException("未知的角色类型");
         }
