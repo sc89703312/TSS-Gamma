@@ -33,6 +33,10 @@ public class ExamEntity {
 
     String password;
 
+    public String getStartTimeInString(){
+        return this.startTime;
+    }
+
     public Date getStartTime() {
         return DateHelper.stringToDate(startTime);
     }

@@ -20,21 +20,17 @@ POST
 ##### 请求参数
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
-| mail | string | 邮箱 |
+| email | string | 邮箱 |
 | password | string |  |
 
 
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "id": 0,
     "type": 0|1,
-    "e-mail": xxxx,
+    "email": xxxx,
     "name": xxxx
-  }
 }
 ```
 
@@ -46,23 +42,20 @@ POST
 ##### 请求参数
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
-| mail | string | 邮箱 |
+| email | string | 邮箱 |
 | password | string |  |
 | type | int | 0代表学生，1代表老师 |
 | name | string | 用户姓名 |
+| number | string | 当注册账号为学生时，需要填写学号 |
 
 
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "id": 0,
     "type": 0|1,
-    "e-mail": xxxx,
+    "email": xxxx,
     "name": xxxx
-  }
 }
 ```
 
@@ -82,7 +75,7 @@ POST
 | [/exam/:id/student](#exam_student_list) | 某一次考试的学生列表 |
 | [/exam/:id/papers](#download_student_exam_paper) | 下载所有选中的学生考卷 |
 | [/course/:id/question](#upload_question) | 上传某一门课程的题库 |
-| [/exam/:id/student](#upload_student_list) | 上传某一次考试的考生列表 |
+| [/exam/:id/student](#upload_file) | 上传文件(通用) |
 
 ## 与老师相关接口详情
 ---
@@ -98,16 +91,12 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "courseList": [
       {
         "id": 0,
         "name": xxx
       }
     ]
-  }
 }
 ```
 
@@ -124,13 +113,7 @@ POST
 
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-    
-  }
-}
+{}
 ```
 ---
 * #### course_exam_list
@@ -145,9 +128,6 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "examList": [
       {
         "id": 0,
@@ -156,7 +136,6 @@ GET
         "endTime": xxx
       }
     ]
-  }
 }
 ```
 ---
@@ -169,19 +148,13 @@ POST
 | examName | string |  |
 | startTime | string |  |
 | endTime | string |  |
-| studentListFileId | int | 上传完学生列表的文件，后台将列表文件存储，并为其编号，将编号结果返回给前端 |
+| studentListFile | string | 学生列表文件名 |
 | scoreList | arr | 分值列表，代表每道题设置的分值，列表项总数代表题目总数 |
 
 
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
- 
-  }
-}
+{}
 ```
 
 ---
@@ -197,11 +170,7 @@ POST
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
      "fileUrl": xxxx
-  }
 }
 ```
 ---
@@ -217,16 +186,12 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
      "studentList": [
       {
         "id": 0,
         "name": xxx
       }
     ]
-  }
 }
 ```
 ---
@@ -243,11 +208,7 @@ POST
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
      "fileUrl": xxxx
-  }
 }
 ```
 
@@ -259,39 +220,28 @@ POST
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
 | courseId | int |  |
-| questionFile | file |  |
+| questionFile | string |  |
 
 
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-     
-  }
-}
+{}
 ```
 
 ---
-* #### upload_student_list
+* #### upload_file
 ##### 请求方法
 POST
 ##### 请求参数
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
-| examId | int |  |
-| studentListFile | file |  |
+| upload_file | file |  |
 
 
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
-     "id": 0
-  }
+   "filename": xxx
 }
 ```
 
@@ -324,16 +274,12 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "examList": [
       {
         "id": 0,
         "name": xxx
       }
     ]
-  }
 }
 ```
 
@@ -350,12 +296,7 @@ POST
 
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-  }
-}
+{}
 ```
 
 ---
@@ -370,11 +311,7 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "questionIdList": [1, 2, 3]
-  }
 }
 ```
 ---
@@ -389,9 +326,6 @@ GET
 ##### 返回结果
 ```
 {
-  "code": 0,
-  "msg": "",
-  "data": {
     "question": xxxx,
     "type": 0(单选) | 1(多选),
     "optionList": [
@@ -400,7 +334,6 @@ GET
         "content": xxx
       }
     ]
-  }
 }
 ```
 
@@ -413,17 +346,16 @@ GET
 |:-------------|:-------------|:-------------|
 | student_id | int | |
 | exam_id | int | |
-| answer | arr | 答题卡，单选题答案为单个数字，多选题答案为数组，如果未作答则为 -1,形如 [1, 1, 2, [1, 3], [2, 4], 4, 2] |
-
+| answer | obj | 答题卡，单选题答案为单个数字，多选题答案为数组，如果未作答则为 -1,形式见下边 |
+```js
+{
+   1 : [2,4],  // questionId, [choiceId...]
+   2 : [5],
+}  
+```
 ##### 返回结果
 ```
-{
-  "code": 0,
-  "msg": "",
-  "data": {
-   
-  }
-}
+{}
 ```
 
 

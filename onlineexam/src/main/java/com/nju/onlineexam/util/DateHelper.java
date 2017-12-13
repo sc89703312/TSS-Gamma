@@ -1,8 +1,10 @@
 package com.nju.onlineexam.util;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
 
 public class DateHelper {
 
@@ -24,6 +26,13 @@ public class DateHelper {
         } catch (ParseException e) {
             throw new RuntimeException("parse ERROR,format="+s);
         }
+    }
+
+    public static String TimestampToString(Timestamp timestamp){
+
+        DateFormat dateFormat = new SimpleDateFormat(defaultFormatString);
+        return dateFormat.format(timestamp);
+
     }
 
 }

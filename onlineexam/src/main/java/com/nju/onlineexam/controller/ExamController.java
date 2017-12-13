@@ -7,9 +7,6 @@ import com.nju.onlineexam.dao.StudentExamRepo;
 import com.nju.onlineexam.entity.CourseEntity;
 import com.nju.onlineexam.entity.ExamEntity;
 import com.nju.onlineexam.entity.StudentExamEntity;
-import com.nju.onlineexam.entity.ExamQuestionEntity;
-
-import com.nju.onlineexam.excel.ExcelHelper;
 import com.nju.onlineexam.service.ExamService;
 import com.nju.onlineexam.service.StudentExcelReader;
 import com.nju.onlineexam.util.FileHelper;
@@ -17,10 +14,6 @@ import com.nju.onlineexam.vo.CreateExamVo;
 import com.nju.onlineexam.vo.ExamVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -28,7 +21,6 @@ import javax.validation.Valid;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.sql.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
