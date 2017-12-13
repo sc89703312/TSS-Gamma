@@ -137,4 +137,10 @@ public class ExamController {
     }
 
 
+    @GetMapping("/exam/{id}")
+    public List<Integer> getExamInfo(@PathVariable int id){
+        return this.examRepo.findQuestionIdListByExamId(id);
+    }
+
+
 }

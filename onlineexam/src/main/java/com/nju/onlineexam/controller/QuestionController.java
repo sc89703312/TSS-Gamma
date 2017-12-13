@@ -9,6 +9,7 @@ import com.nju.onlineexam.entity.QuestionEntity;
 import com.nju.onlineexam.service.QuestionExcelReader;
 import com.nju.onlineexam.util.FileHelper;
 import com.nju.onlineexam.vo.ChoiceVo;
+import com.nju.onlineexam.vo.QuestionInfoVo;
 import com.nju.onlineexam.vo.QuestionVo;
 import com.nju.onlineexam.vo.UploadQuestionParam;
 import org.springframework.beans.BeanUtils;
@@ -79,6 +80,32 @@ public class QuestionController {
         }
 
         return questionVo;
+    }
+
+    @GetMapping("/question/{id}")
+    public QuestionInfoVo getQuestionInfo(@PathVariable int id){
+
+        QuestionEntity questionEntity = questionRepo.getOne(id);
+        if(questionEntity == null){
+            throw new RuntimeException("question不存在，id:"+id);
+        }
+
+        QuestionInfoVo questionInfoVo = new QuestionInfoVo();
+        questionInfoVo.setQuestion(questionEntity.getDescription());
+
+        Long answerCnt = questionRepo.countAnswers(id);
+        if(answerCnt <= 0){
+            throw new RuntimeException("问题没有设置正确答案");
+        }
+        questionInfoVo.setType(answerCnt == 1 ? Const.SINGLE_ANSWER : Const.MULTI_ANSWER );
+
+        for(ChoiceEntity choiceEntity : questionEntity.getChoiceList()){
+            QuestionInfoVo.Option option = new QuestionInfoVo.Option();
+            option.id = choiceEntity.getId();
+            option.content = choiceEntity.getDescription();
+            questionInfoVo.getOptionList().add(option);
+        }
+        return questionInfoVo;
     }
 
 }
