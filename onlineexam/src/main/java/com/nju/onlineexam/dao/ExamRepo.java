@@ -15,4 +15,7 @@ public interface ExamRepo extends JpaRepository<ExamEntity,Integer> {
 
     @Query("select s.email from student_exam se , student s where se.exam.id = ?1 and se.student.id = s.id")
     List<String> findStdEmailsByExamId(int id);
+
+    @Query("select eq.question_id from exam_question eq where eq.exam_id = ?1 ")
+    List<Integer> findQuestionIdListByExamId(int id);
 }

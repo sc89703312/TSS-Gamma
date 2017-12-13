@@ -9,15 +9,15 @@ import com.nju.onlineexam.entity.QuestionEntity;
 import com.nju.onlineexam.service.QuestionExcelReader;
 import com.nju.onlineexam.util.FileHelper;
 import com.nju.onlineexam.vo.ChoiceVo;
+import com.nju.onlineexam.vo.QuestionInfoVo;
 import com.nju.onlineexam.vo.QuestionVo;
+import com.nju.onlineexam.vo.UploadQuestionParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -36,18 +36,19 @@ public class QuestionController {
     @Autowired
     CourseRepo courseRepo;
 
-    @PostMapping("/course/{courseId}/question/upload")
+    @PostMapping("/course/{courseId}/question")
     @Transactional
-    public List<QuestionVo> uploadExcel(@PathVariable int courseId, @RequestParam("fileName") String fileName)
+    public List<QuestionVo> uploadExcel(@PathVariable int courseId,
+                                        @RequestBody @Valid UploadQuestionParam param)
             throws IOException {
 
         if( ! courseRepo.existsById(courseId) ){
             throw new RuntimeException("courseId not exist:"+courseId);
         }
 
-        Path filePath = FileHelper.openFile(fileName);
+        Path filePath = FileHelper.openFile(param.getQuestionFile());
         FileInputStream iStream = new FileInputStream(filePath.toFile());
-        List<QuestionVo> questionVos = questionExcelReader.readExcel(iStream,fileName);
+        List<QuestionVo> questionVos = questionExcelReader.readExcel(iStream,param.getQuestionFile());
 
         CourseEntity courseEntity = courseRepo.getOne(courseId);
 
@@ -79,6 +80,32 @@ public class QuestionController {
         }
 
         return questionVo;
+    }
+
+    @GetMapping("/question/{id}")
+    public QuestionInfoVo getQuestionInfo(@PathVariable int id){
+
+        QuestionEntity questionEntity = questionRepo.getOne(id);
+        if(questionEntity == null){
+            throw new RuntimeException("question不存在，id:"+id);
+        }
+
+        QuestionInfoVo questionInfoVo = new QuestionInfoVo();
+        questionInfoVo.setQuestion(questionEntity.getDescription());
+
+        Long answerCnt = questionRepo.countAnswers(id);
+        if(answerCnt <= 0){
+            throw new RuntimeException("问题没有设置正确答案");
+        }
+        questionInfoVo.setType(answerCnt == 1 ? Const.SINGLE_ANSWER : Const.MULTI_ANSWER );
+
+        for(ChoiceEntity choiceEntity : questionEntity.getChoiceList()){
+            QuestionInfoVo.Option option = new QuestionInfoVo.Option();
+            option.id = choiceEntity.getId();
+            option.content = choiceEntity.getDescription();
+            questionInfoVo.getOptionList().add(option);
+        }
+        return questionInfoVo;
     }
 
 }

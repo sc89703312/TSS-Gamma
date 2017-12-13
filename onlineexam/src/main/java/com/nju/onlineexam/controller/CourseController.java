@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("course")
 public class CourseController {
 
     @Autowired
@@ -25,8 +24,8 @@ public class CourseController {
     TeacherRepo teacherRepo;
 
 
-    @PostMapping("create")
-    public CourseVo createCourse(@RequestHeader(value="UserId") int userId, @RequestBody @Valid CourseVo courseVo){
+    @PostMapping("teacher/{userId}/course")
+    public CourseVo createCourse(@PathVariable int userId, @RequestBody @Valid CourseVo courseVo){
 
         if( ! teacherRepo.existsById(userId) ){
             throw new RuntimeException("teacher id not exist:"+userId);
@@ -47,9 +46,9 @@ public class CourseController {
         return resultVo;
     }
 
-    @GetMapping("")
+    @GetMapping("teacher/{userId}/course")
     @Transactional
-    public List<CourseVo> getCourseList(@RequestHeader(value="UserId") int userId){
+    public List<CourseVo> getCourseList(@PathVariable int userId){
 
         if( ! teacherRepo.existsById(userId) ){
             throw new RuntimeException("teacher id not exist:"+userId);
@@ -72,7 +71,7 @@ public class CourseController {
         }
     }
 
-    @GetMapping("{courseId}")
+    @GetMapping("course/{courseId}")
     public CourseVo getCourse(@PathVariable int courseId){
 
         CourseEntity courseEntity = courseRepo.getOne(courseId);
