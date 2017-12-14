@@ -1,15 +1,13 @@
 package com.nju.onlineexam.controller;
 
 
-import com.nju.onlineexam.dao.ExamRepo;
-import com.nju.onlineexam.dao.StudentExamRepo;
-import com.nju.onlineexam.entity.ExamEntity;
-import com.nju.onlineexam.entity.StudentEntity;
-import com.nju.onlineexam.entity.StudentExamEntity;
+import com.nju.onlineexam.dao.*;
+import com.nju.onlineexam.entity.*;
 import com.nju.onlineexam.util.DataConverter;
 import com.nju.onlineexam.vo.EnterExamParam;
 import com.nju.onlineexam.vo.ExamStudentVo;
 import com.nju.onlineexam.vo.ExamVo;
+import com.nju.onlineexam.vo.SubmitAnswerParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +22,19 @@ import java.util.stream.Collectors;
 public class StudentController {
 
     @Autowired
+    StudentRepo studentRepo;
+
+    @Autowired
     StudentExamRepo studentExamRepo;
 
     @Autowired
     ExamRepo examRepo;
+
+    @Autowired
+    QuestionRepo questionRepo;
+
+    @Autowired
+    StudentExamPaperRepo studentExamPaperRepo;
 
     /**
      * 查看自己尚未参加的考试列表
@@ -88,4 +95,41 @@ public class StudentController {
 
     }
 
+    @PostMapping("/student/{studentId}/exam/{examId}/submit")
+    public void submitAnswer(@PathVariable int studentId , @PathVariable int examId , @RequestBody SubmitAnswerParam submitAnswerParam){
+
+        StudentExamEntity studentExamEntity = studentExamRepo.findByExamIdAndStudentId(examId,studentId);
+        if(studentExamEntity == null){
+            throw new RuntimeException("student_exam not found , studentId :"+studentId + ",examId:"+examId);
+        }
+
+        for(SubmitAnswerParam.QuestionAndAnswer questionAndAnswer : submitAnswerParam.getAnswer()){
+            StudentExamPaperEntity studentExamPaperEntity = new StudentExamPaperEntity();
+            studentExamPaperEntity.setStudentExam(studentExamEntity);
+
+            QuestionEntity questionEntity = questionRepo.getOne(questionAndAnswer.getQuestionId());
+            if(questionEntity == null){
+                throw new RuntimeException("question not found, id:"+questionAndAnswer.getQuestionId());
+            }
+            studentExamPaperEntity.setQuestion(questionEntity);
+            studentExamPaperEntity.setSelected(getAnswersInString(questionAndAnswer.getAnswerIds()));
+            studentExamPaperRepo.save(studentExamPaperEntity);
+        }
+    }
+
+    private String getAnswersInString(int [] answerIds){
+        if(answerIds == null || answerIds.length ==0){
+            return "";
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < answerIds.length; i++){
+            stringBuilder.append(answerIds[i]).append(",");
+        }
+
+        if(stringBuilder.length() > 1){
+            stringBuilder.deleteCharAt(stringBuilder.length()-1);
+        }
+        return  stringBuilder.toString();
+    }
 }
