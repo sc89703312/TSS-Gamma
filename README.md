@@ -15,6 +15,7 @@
 6. question_info返回值中，question添加`id`字段.
 7. upload_file接口中，参数`upload_file`改名为`file`
 8. download_exam下载某一门考试的试卷的url从`/exam/:id`改为`/exam/:id/download`.
+9. 学生提交试卷的接口方法改为POST，返回描述变更
 
 ## 认证
    
@@ -271,7 +272,7 @@ POST
 | [/student/:student_id/exam/:exam_id](#enter_exam) `done` | 某学生参加某次考试，输入验证码 |
 | [/exam/:id](#exam_info) `done` | 获得某次考试的基本信息 | 
 | [/question/:id](#question_info) `done` | 获得某道题目的信息 |
-| [/student/:student_id/exam/:exam_id/submit](#exam_submit) | 某学生提交某次试卷 |
+| [/student/:student_id/exam/:exam_id/submit](#exam_submit)  `done` | 某学生提交某次试卷 |
 
 ## 与学生相关接口详情
 ---
@@ -355,17 +356,18 @@ GET
 ---
 * #### exam_submit
 ##### 请求方法
-GET
+POST
 ##### 请求参数
 | 参数名称 | 参数类型 | 说明 |
 |:-------------|:-------------|:-------------|
 | student_id | int | |
 | exam_id | int | |
-| answer | obj | 答题卡，单选题答案为单个数字，多选题答案为数组，如果未作答则为 -1,形式见下边 |
+| answer | obj | 答题卡，答案为数组，如果未作答则为空数组,形式见下边 |
 ```js
 {
    1 : [2,4],  // questionId, [choiceId...]
    2 : [5],
+   3 : []
 }  
 ```
 ##### 返回结果

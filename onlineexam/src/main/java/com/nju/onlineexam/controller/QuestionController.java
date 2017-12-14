@@ -46,7 +46,7 @@ public class QuestionController {
             throw new RuntimeException("courseId not exist:"+courseId);
         }
 
-        Path filePath = FileHelper.openFile(param.getQuestionFile());
+        Path filePath = FileHelper.openUploadFile(param.getQuestionFile());
         FileInputStream iStream = new FileInputStream(filePath.toFile());
         List<QuestionVo> questionVos = questionExcelReader.readExcel(iStream,param.getQuestionFile());
 
