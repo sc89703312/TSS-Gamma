@@ -12,4 +12,6 @@ public interface StudentExamPaperRepo extends JpaRepository<StudentExamPaperEnti
     @Query("select sep.question.id  from student_exam_paper sep where sep.studentExam.id = ?1 and sep.isRight = 1")
     List<Integer> getSolvedQuestionIdList (int stdExamId);
 
+    List<StudentExamPaperEntity> getByStudentIdAndExamId(int studentId,int examId);
+
 }
