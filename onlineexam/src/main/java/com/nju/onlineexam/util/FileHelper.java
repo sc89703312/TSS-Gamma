@@ -10,11 +10,12 @@ import java.nio.file.StandardCopyOption;
 
 public class FileHelper {
 
-    private static final String fileRootDir = "upload";
+    private static final String uploadRootDir = "upload";
+    private static final String downloadRootDir = "download";
 
-    public static synchronized void saveFile(String fileName, InputStream iStream){
+    public static synchronized void saveUploadFile(String fileName, InputStream iStream){
 
-        File rootDir = new File(fileRootDir);
+        File rootDir = new File(uploadRootDir);
         if( ! (rootDir.exists() && rootDir.isDirectory()) ){
             boolean result = rootDir.mkdir();
             if( ! result ){
@@ -22,7 +23,7 @@ public class FileHelper {
             }
         }
 
-        Path newFile = Paths.get(fileRootDir,fileName);
+        Path newFile = Paths.get(uploadRootDir,fileName);
         try {
             Files.copy(iStream,newFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -32,8 +33,8 @@ public class FileHelper {
 
     }
 
-    public static Path openFile(String fileName){
-        return Paths.get(fileRootDir,fileName);
+    public static Path openUploadFile(String fileName){
+        return Paths.get(uploadRootDir,fileName);
     }
 
 }

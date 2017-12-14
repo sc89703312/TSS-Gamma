@@ -12,7 +12,6 @@ import com.nju.onlineexam.service.StudentExcelReader;
 import com.nju.onlineexam.util.DataConverter;
 import com.nju.onlineexam.util.FileHelper;
 import com.nju.onlineexam.vo.CreateExamVo;
-import com.nju.onlineexam.vo.EnterExamParam;
 import com.nju.onlineexam.vo.ExamVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +109,7 @@ public class ExamController {
     }
 
     private List<StudentExamEntity> getStudentList(String fileName){
-        Path filePath = FileHelper.openFile(fileName);
+        Path filePath = FileHelper.openUploadFile(fileName);
         try {
 
             FileInputStream iStream = new FileInputStream(filePath.toFile());

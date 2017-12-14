@@ -11,6 +11,9 @@ public interface QuestionRepo extends JpaRepository<QuestionEntity,Integer> {
     @Query("select q.id from question q where q.course.id = ?1")
     List<Integer> findIdsByCourseId(int courseId);
 
-    @Query("select count(c) from choice c where c.question.id = ?1 and is_right_answer = 1")
+    @Query("select count(c) from choice c where c.question.id = ?1 and c.isRightAnswer = 1")
     Long countAnswers(int questionId);
+
+    @Query("select c.id from choice c where c.question.id = ?1 and c.isRightAnswer = 1")
+    List<Integer> findRightChoiceIds(int questionId );
 }

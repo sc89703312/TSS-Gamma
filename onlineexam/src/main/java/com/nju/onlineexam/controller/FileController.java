@@ -23,7 +23,7 @@ public class FileController {
         String fileName = file.getOriginalFilename();
 
         String serverFileName = DateHelper.dateToString(new Date(),format) + "_" + fileName;
-        FileHelper.saveFile(serverFileName,file.getInputStream());
+        FileHelper.saveUploadFile(serverFileName,file.getInputStream());
         return new UploadFileResp(serverFileName);
     }
 
