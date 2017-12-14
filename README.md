@@ -272,7 +272,7 @@ POST
 | [/student/:student_id/exam/:exam_id](#enter_exam) `done` | 某学生参加某次考试，输入验证码 |
 | [/exam/:id](#exam_info) `done` | 获得某次考试的基本信息 | 
 | [/question/:id](#question_info) `done` | 获得某道题目的信息 |
-| [/student/:student_id/exam/:exam_id/submit](#exam_submit) | 某学生提交某次试卷 |
+| [/student/:student_id/exam/:exam_id/submit](#exam_submit)  `done` | 某学生提交某次试卷 |
 
 ## 与学生相关接口详情
 ---
