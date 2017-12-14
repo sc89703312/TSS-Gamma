@@ -14,6 +14,8 @@ public class StudentExamPaperEntity {
 
     String selected;
 
+    Boolean isRight;
+
     @ManyToOne
     QuestionEntity question;
 
