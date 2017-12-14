@@ -11,5 +11,6 @@ public class ExamStudentVo {
     int id;
     String name;
     String email;
+    Integer score;
 
 }

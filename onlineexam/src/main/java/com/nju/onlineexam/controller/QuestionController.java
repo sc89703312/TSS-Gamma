@@ -8,10 +8,7 @@ import com.nju.onlineexam.entity.CourseEntity;
 import com.nju.onlineexam.entity.QuestionEntity;
 import com.nju.onlineexam.service.QuestionExcelReader;
 import com.nju.onlineexam.util.FileHelper;
-import com.nju.onlineexam.vo.ChoiceVo;
-import com.nju.onlineexam.vo.QuestionInfoVo;
-import com.nju.onlineexam.vo.QuestionVo;
-import com.nju.onlineexam.vo.UploadQuestionParam;
+import com.nju.onlineexam.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -107,6 +104,17 @@ public class QuestionController {
             questionInfoVo.getOptionList().add(option);
         }
         return questionInfoVo;
+    }
+
+    @GetMapping("/course/{courseId}/question/count")
+    public QuestionCountVo getQuestionCount(@PathVariable int courseId){
+
+        if( ! courseRepo.existsById(courseId) ){
+            throw new RuntimeException("课程不存在");
+        }
+
+        int count = questionRepo.countByCourseId(courseId);
+        return new QuestionCountVo(count);
     }
 
 }
