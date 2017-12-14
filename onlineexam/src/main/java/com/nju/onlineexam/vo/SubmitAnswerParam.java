@@ -2,16 +2,10 @@ package com.nju.onlineexam.vo;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Map;
 
 @Data
 public class SubmitAnswerParam {
 
-    List<QuestionAndAnswer> answer;
-
-    @Data
-    public  class QuestionAndAnswer{
-        int questionId;
-        int[] answerIds;
-    }
+    Map<Integer, int []> answer;
 }

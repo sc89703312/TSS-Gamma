@@ -3,6 +3,7 @@ package com.nju.onlineexam.controller;
 
 import com.nju.onlineexam.dao.*;
 import com.nju.onlineexam.entity.*;
+import com.nju.onlineexam.service.ExamService;
 import com.nju.onlineexam.util.DataConverter;
 import com.nju.onlineexam.vo.EnterExamParam;
 import com.nju.onlineexam.vo.ExamStudentVo;
@@ -15,14 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 public class StudentController {
 
-    @Autowired
-    StudentRepo studentRepo;
 
     @Autowired
     StudentExamRepo studentExamRepo;
@@ -35,6 +34,9 @@ public class StudentController {
 
     @Autowired
     StudentExamPaperRepo studentExamPaperRepo;
+
+    @Autowired
+    ExamService examService;
 
     /**
      * 查看自己尚未参加的考试列表
@@ -104,28 +106,40 @@ public class StudentController {
             throw new RuntimeException("student_exam not found , studentId :"+studentId + ",examId:"+examId);
         }
 
-        for(SubmitAnswerParam.QuestionAndAnswer questionAndAnswer : submitAnswerParam.getAnswer()){
+        if(studentExamEntity.getScore() != null){
+            throw new RuntimeException("该学生已经参加过该考试");
+        }
+
+        for( Map.Entry<Integer, int []> entry : submitAnswerParam.getAnswer().entrySet()){
             StudentExamPaperEntity studentExamPaperEntity = new StudentExamPaperEntity();
             studentExamPaperEntity.setStudentExam(studentExamEntity);
 
-            QuestionEntity questionEntity = questionRepo.getOne(questionAndAnswer.getQuestionId());
+            QuestionEntity questionEntity = questionRepo.getOne(entry.getKey());
             if(questionEntity == null){
-                throw new RuntimeException("question not found, id:"+questionAndAnswer.getQuestionId());
+                throw new RuntimeException("question not found, id:"+entry.getKey());
             }
             studentExamPaperEntity.setQuestion(questionEntity);
-            studentExamPaperEntity.setSelected(getAnswersInString(questionAndAnswer.getAnswerIds()));
+            studentExamPaperEntity.setSelected(getStringWithSplitChar(entry.getValue()));
+            studentExamPaperEntity.setIsRight( examService.judgeAnswer(entry.getKey(),entry.getValue()));
+
             studentExamPaperRepo.save(studentExamPaperEntity);
         }
+
+        int socre = examService.calculateSocre(studentId,examId);
+        studentExamEntity.setScore(socre);
+        studentExamRepo.save(studentExamEntity);
+
     }
 
-    private String getAnswersInString(int [] answerIds){
-        if(answerIds == null || answerIds.length ==0){
+
+    public String getStringWithSplitChar(int [] array){
+        if(array == null || array.length ==0){
             return "";
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i = 0; i < answerIds.length; i++){
-            stringBuilder.append(answerIds[i]).append(",");
+        for(int i = 0; i < array.length; i++){
+            stringBuilder.append(array[i]).append(",");
         }
 
         if(stringBuilder.length() > 1){
@@ -133,4 +147,6 @@ public class StudentController {
         }
         return  stringBuilder.toString();
     }
+
+
 }

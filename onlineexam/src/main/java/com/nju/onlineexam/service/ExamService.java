@@ -1,10 +1,10 @@
 package com.nju.onlineexam.service;
 
 import com.nju.onlineexam.dao.ExamQuestionRepo;
-import com.nju.onlineexam.entity.CourseEntity;
-import com.nju.onlineexam.entity.ExamEntity;
-import com.nju.onlineexam.entity.ExamQuestionEntity;
-import com.nju.onlineexam.entity.QuestionEntity;
+import com.nju.onlineexam.dao.QuestionRepo;
+import com.nju.onlineexam.dao.StudentExamPaperRepo;
+import com.nju.onlineexam.dao.StudentExamRepo;
+import com.nju.onlineexam.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +18,18 @@ import java.util.Random;
 @Component
 public class ExamService {
 
+
+    @Autowired
+    StudentExamRepo studentExamRepo;
+
+    @Autowired
+    StudentExamPaperRepo studentExamPaperRepo;
+
     @Autowired
     ExamQuestionRepo examQuestionRepo;
+
+    @Autowired
+    QuestionRepo questionRepo;
 
     /**
      * 随机选择试题，设置对应分数
@@ -47,4 +57,35 @@ public class ExamService {
         }
     }
 
+
+    public int calculateSocre(int studentId , int examId){
+
+        StudentExamEntity studentExamEntity = studentExamRepo.findByExamIdAndStudentId(examId,studentId);
+        List<Integer> questionIds = studentExamPaperRepo.getSolvedQuestionIdList(studentExamEntity.getId());
+        return examQuestionRepo.calculateScore(examId,questionIds);
+    }
+
+    public boolean judgeAnswer(int questionId ,  int[] selected ){
+
+        List<Integer> rightAnswers = questionRepo.findRightChoiceIds(questionId);
+
+        if(rightAnswers == null || rightAnswers.size() == 0 ){
+            throw new RuntimeException("question:"+questionId +",未设置正确答案");
+        }
+
+        if(selected == null || selected.length == 0){
+            return false;
+        }
+
+        if(selected.length != rightAnswers.size()){
+            return false;
+        }else {
+            for( int i = 0; i < selected.length ; i++){
+                if(!rightAnswers.contains(selected[i])){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

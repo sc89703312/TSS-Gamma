@@ -16,6 +16,8 @@
 7. upload_file接口中，参数`upload_file`改名为`file`
 8. download_exam下载某一门考试的试卷的url从`/exam/:id`改为`/exam/:id/download`.
 9. 学生提交试卷的接口方法改为POST，返回描述变更
+10. 新增获取课程题目数量的接口
+11. 查询考试学生接口,新增学生score字段,为null表示学生还没交卷
 
 ## 认证
    
@@ -92,6 +94,7 @@ POST
 | [/exam/:id/download](#download_exam) | 下载某一门考试的试卷 |
 | [/exam/:id/papers](#download_student_exam_paper) | 下载所有选中的学生考卷 |
 | [/course/:id/question](#upload_question) `done` | 上传某一门课程的题库 |
+| [/course/:id/question/count](#question_count) | 获得课程的question数量 |
 | [file/upload](#upload_file) `done` | 上传文件(通用) |
 
 ## 与老师相关接口详情
@@ -243,6 +246,23 @@ POST
 ```
 
 ---
+* #### question_count
+##### 请求方法
+GET
+##### 请求参数
+| 参数名称 | 参数类型 | 说明 |
+|:-------------|:-------------|:-------------|
+| courseId | int |  |
+
+
+##### 返回结果
+```
+{
+   "questionCount": 10
+}
+```
+
+---
 * #### upload_file
 ##### 请求方法
 POST
@@ -272,7 +292,7 @@ POST
 | [/student/:student_id/exam/:exam_id](#enter_exam) `done` | 某学生参加某次考试，输入验证码 |
 | [/exam/:id](#exam_info) `done` | 获得某次考试的基本信息 | 
 | [/question/:id](#question_info) `done` | 获得某道题目的信息 |
-| [/student/:student_id/exam/:exam_id/submit](#exam_submit) | 某学生提交某次试卷 |
+| [/student/:student_id/exam/:exam_id/submit](#exam_submit)  `done` | 某学生提交某次试卷 |
 
 ## 与学生相关接口详情
 ---
