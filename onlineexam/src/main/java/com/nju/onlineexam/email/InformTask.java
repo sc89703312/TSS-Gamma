@@ -41,15 +41,20 @@ public class InformTask {
         String end =  DateHelper.TimestampToString(new Timestamp(now + TIME_AHEAD)) ;
         List<ExamEntity>  examEntities = examRepo.findExamsStartBetween(start ,end);
         for(ExamEntity examEntity : examEntities){
-            StringBuilder messageBuilder = new StringBuilder();
-            messageBuilder.append("您有一场考试：").append(examEntity.getName()).append("，即将在").append(examEntity.getStartTimeInString()).append(" 开始，请提前做好准备。");
-            List<String> studentEmails = examRepo.findStdEmailsByExamId(examEntity.getId());
-            for(String toAddr : studentEmails) {
-                mailService.sendEmail(fromAddr, toAddr, subject, messageBuilder.toString());
-            }
+            informOneExam(examEntity);
         }
     }
 
+    public void informOneExam(ExamEntity examEntity){
+        StringBuilder messageBuilder = new StringBuilder();
+        messageBuilder.append("您有一场考试：").append(examEntity.getName()).append("，即将在").append(examEntity.getStartTimeInString()).append(" 开始，请提前做好准备。");
+        messageBuilder.append("\n");
+        messageBuilder.append("考试密码为: ").append(examEntity.getPassword());
+        List<String> studentEmails = examRepo.findStdEmailsByExamId(examEntity.getId());
+        for(String toAddr : studentEmails) {
+            mailService.sendEmail(fromAddr, toAddr, subject, messageBuilder.toString());
+        }
+    }
 
 
 }

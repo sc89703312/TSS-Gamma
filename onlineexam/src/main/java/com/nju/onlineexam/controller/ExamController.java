@@ -4,6 +4,7 @@ import com.nju.onlineexam.dao.CourseRepo;
 import com.nju.onlineexam.dao.ExamRepo;
 import com.nju.onlineexam.dao.QuestionRepo;
 import com.nju.onlineexam.dao.StudentExamRepo;
+import com.nju.onlineexam.email.InformTask;
 import com.nju.onlineexam.entity.CourseEntity;
 import com.nju.onlineexam.entity.ExamEntity;
 import com.nju.onlineexam.entity.StudentExamEntity;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import java.sql.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -47,6 +49,8 @@ public class ExamController {
     @Autowired
     ExamService examService;
 
+    @Autowired
+    InformTask informTask;
 
     @GetMapping("/course/{courseId}/exam")
     @Transactional
@@ -100,6 +104,14 @@ public class ExamController {
 
         //随机选出考题
         examService.selectExamQuestion(examEntity,createExamVo.getScoreList());
+
+        //如果考试已经开始,就直接发邮件
+        java.util.Date now = new java.util.Date();
+        if( now.compareTo(createExamVo.getStartTime()) >= 0 &&
+            now.compareTo(createExamVo.getEndTime()) < 0 ){
+
+            informTask.informOneExam(examEntity);
+        }
 
         return DataConverter.convertToExamVo(examEntity);
     }

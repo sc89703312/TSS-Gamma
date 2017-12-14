@@ -92,6 +92,7 @@ public class StudentController {
             StudentEntity studentEntity = studentExam.getStudent();
             ExamStudentVo vo = new ExamStudentVo();
             BeanUtils.copyProperties(studentEntity,vo);
+            vo.setScore(studentExam.getScore());
             return vo;
         }).collect(Collectors.toList());
 
