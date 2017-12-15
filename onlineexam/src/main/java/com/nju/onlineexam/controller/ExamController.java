@@ -52,6 +52,9 @@ public class ExamController {
     @Autowired
     InformTask informTask;
 
+    @Autowired
+    DataConverter dataConverter;
+
     @GetMapping("/course/{courseId}/exam")
     @Transactional
     public List<ExamVo> getExams(@PathVariable int courseId){
@@ -113,7 +116,7 @@ public class ExamController {
             informTask.informOneExam(examEntity);
         }
 
-        return DataConverter.convertToExamVo(examEntity);
+        return dataConverter.convertToExamVo(examEntity);
     }
 
     private String getExamPassword(){
@@ -139,7 +142,7 @@ public class ExamController {
     public ExamVo getExamInfo(@PathVariable int id){
 
         ExamEntity examEntity = examRepo.findById(id).get();
-        ExamVo examVo = DataConverter.convertToExamVo(examEntity);
+        ExamVo examVo = dataConverter.convertToExamVo(examEntity);
         examVo.setQuestionList(examRepo.findQuestionIdListByExamId(id));
         return examVo;
 

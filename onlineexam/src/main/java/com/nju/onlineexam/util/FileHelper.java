@@ -57,21 +57,23 @@ public class FileHelper {
         }
     }
 
-    public void compressExcels(String compressFileName, List<String> filenames){
+    public static synchronized void compressExcels(String compressFileName, List<String> filenames){
         byte[] buffer = new byte[1024*20];
 
         try {
-            FileOutputStream fos = new FileOutputStream(compressFileName);
+            File compressFile = Paths.get(downloadRootDir,compressFileName).toFile();
+            FileOutputStream fos = new FileOutputStream(compressFile);
             ZipOutputStream zos = new ZipOutputStream(fos);
             zos.setMethod(ZipOutputStream.DEFLATED);
 
-            for (String file : filenames) {
+            for (String fileName : filenames) {
 
-                System.out.println("File added: " + file);
-                ZipEntry ze = new ZipEntry(file);
+                System.out.println("File added: " + fileName);
+                ZipEntry ze = new ZipEntry(fileName);
                 zos.putNextEntry(ze);
 
-                FileInputStream in = new FileInputStream(file);
+                File serverFileName = Paths.get(downloadRootDir,fileName).toFile();
+                FileInputStream in = new FileInputStream(serverFileName);
 
                 int len;
                 while ((len = in.read(buffer)) > 0) {

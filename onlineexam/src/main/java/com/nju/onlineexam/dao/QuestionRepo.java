@@ -19,4 +19,10 @@ public interface QuestionRepo extends JpaRepository<QuestionEntity,Integer> {
     @Query("select c.id from choice c where c.question.id = ?1 and c.isRightAnswer = 1")
     List<Integer> findRightChoiceIds(int questionId );
 
+
+    @Query("select c.id from choice c where c.question.id = ?1 order by c.id")
+    List<Integer> findChoiceIds(int questionId );
+
+    @Query("select c.description from choice c where c.question.id = ?1 order by c.id")
+    List<String> findChoiceContents(int questionId );
 }
