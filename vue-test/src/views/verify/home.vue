@@ -96,15 +96,17 @@
         }
         ResourceVerify.login(params).then((res) => {
           console.log('success')
-          if (params.email === '1111@nju.edu.cn') {
-            this.$router.push({name: 'TeacherHome', params: {teacher_id: 1}})
+          let userInfo = res.data
+          if (userInfo.type === 1) {
+            this.$cookie.set('teacher_id', userInfo.id)
+            this.$router.push({name: 'TeacherHome', params: {teacher_id: userInfo.id}})
           } else {
-            this.$router.push({name: 'StudentHome', params: {student_id: 1}})
+            this.$cookie.set('student_id', userInfo.id)
+            this.$router.push({name: 'StudentHome', params: {student_id: userInfo.id}})
           }
-          this.$cookie.set('user_id', 1)
         }).catch((err) => {
           console.log('err')
-          let errMsg = err.response.data.message
+          let errMsg = (err.response) ? err.response.data.message : '服务器连接出错'
           let options = {
             message: errMsg
           }

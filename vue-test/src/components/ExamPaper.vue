@@ -15,17 +15,17 @@
       <div>
         <div class="question">【{{questionType}}】{{question}}</div>
         <template>
-          <el-radio-group v-if="!multiple" v-model="answer" @change="selectAnswer">
+          <el-radio-group style="width: 100%" v-if="!multiple" v-model="answer" @change="selectAnswer">
             <template v-for="option in options">
               <el-col :span="24" class="option">
-                <el-radio :label="option.id">{{option.content}}</el-radio>
+                <el-radio :label="option.index">{{option.content}}</el-radio>
               </el-col>
             </template>
           </el-radio-group>
-          <el-checkbox-group v-if="multiple" v-model="answerList" @change="selectAnswer">
+          <el-checkbox-group style="width: 100%" v-if="multiple" v-model="answerList" @change="selectAnswer">
             <template v-for="option in options">
               <el-col :span="24" class="option">
-                <el-checkbox :label="option.id">{{option.content}}</el-checkbox>
+                <el-checkbox :label="option.index">{{option.content}}</el-checkbox>
               </el-col>
             </template>
           </el-checkbox-group>
@@ -81,12 +81,13 @@
 </style>
 
 <script>
+  import ResourceStudent from '@/services/student'
   export default {
     name: 'ExamPaper',
     data () {
       return {
         timer: '',
-        answer: 0,
+        answer: -1,
         answerList: [],
         multiple: true,
         question: '',
@@ -160,24 +161,30 @@
       selectAnswer (val) {
         let answerList = JSON.parse(this.$cookie.get('answerList'))
         let answerContent = JSON.parse(this.$cookie.get('answerContent'))
+        let indexList = JSON.parse(this.$cookie.get('indexList'))
         let currentQId = this.$route.params.q_id
         let questionList = this.$cookie.get('questionList').split(',')
         let currentIndex = questionList.indexOf(currentQId)
-        answerList[currentIndex] = val
-        console.log(val)
+        indexList[currentIndex] = val
         if (val instanceof Array) {
           let contentList = []
+          let tempAnswerList = []
           for (var index in val) {
-            contentList.push(this.options[val[index] - 1].content)
+            contentList.push(this.options[val[index]].content)
+            tempAnswerList.push(this.options[val[index]].id)
           }
           answerContent[currentIndex] = contentList
+          answerList[currentIndex] = tempAnswerList
         } else {
-          answerContent[currentIndex] = this.options[val - 1].content
+          answerContent[currentIndex] = this.options[val].content
+          answerList[currentIndex] = this.options[val].id
         }
         this.$cookie.set('answerList', JSON.stringify(answerList))
         this.$cookie.set('answerContent', JSON.stringify(answerContent))
+        this.$cookie.set('indexList', JSON.stringify(indexList))
         console.log(this.$cookie.get('answerList'))
         console.log(this.$cookie.get('answerContent'))
+        console.log(this.$cookie.get('indexList'))
       },
       markDetected () {
         let markedList = this.$cookie.get('markedList').split(',')
@@ -192,14 +199,14 @@
         }
       },
       selectDetected () {
-        let answerList = JSON.parse(this.$cookie.get('answerList'))
+        let indexList = JSON.parse(this.$cookie.get('indexList'))
         let currentQId = this.$route.params.q_id
         let questionList = this.$cookie.get('questionList').split(',')
         let currentIndex = questionList.indexOf(currentQId)
-        let recordSelect = answerList[currentIndex]
+        let recordSelect = indexList[currentIndex]
         console.log('recordSelect: ' + recordSelect)
         if (recordSelect === -1) {
-          this.answer = 0
+          this.answer = -1
           this.answerList = []
         } else if (this.multiple) {
           this.answerList = recordSelect
@@ -208,14 +215,21 @@
         }
       },
       fetchQuestionInfo () {
-        this.question = '2016年二十国集团峰会第一次协调人会议1月14日在北京国际饭店开幕。杭州峰会主题是“（   ）”。'
-        this.options = [
-          {id: 1, content: '构建创新、活力、联动、包容的世界经济'},
-          {id: 2, content: '创新新生代的——又快又高强的现代社会经济共用体'},
-          {id: 3, content: '我家有一头大象, 大象, 大象的脖子长'},
-          {id: 4, content: '毛泽东思想, 邓小平理论, 三个代表'}
-        ]
-        this.multiple = this.$route.params.q_id >= 4
+        ResourceStudent.questionInfo({questionId: this.$route.params.q_id}).then((res) => {
+          let questionInfo = res.data
+          this.question = questionInfo.question
+          this.options = []
+          let count = 0
+          questionInfo.optionList.map((obj) => {
+            this.options.push({
+              id: obj.id,
+              content: obj.content,
+              index: count++
+            })
+          })
+          this.multiple = questionInfo.type === 1
+          this.selectDetected()
+        })
       }
     },
     watch: {
@@ -224,8 +238,6 @@
       $route () {
         this.fetchQuestionInfo()
         this.markDetected()
-        this.selectDetected()
-//        this.answerCardDetected()
       }
     },
     computed: {
@@ -266,8 +278,6 @@
       this.timerCal()
       this.fetchQuestionInfo()
       this.markDetected()
-      this.selectDetected()
-//      this.answerCardDetected()
     }
   }
 </script>

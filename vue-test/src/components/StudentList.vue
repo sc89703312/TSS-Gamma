@@ -3,9 +3,8 @@
     <h4 class="form-title">考卷生成</h4>
     <el-form class="exam-paper-el-form" ref="form" :model="form" label-width="80px" label-position="left">
       <el-form-item label="学生列表" class="last-form-item">
-        <el-checkbox :indeterminate="form.isIndeterminate" v-model="form.checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-        <el-checkbox-group v-model="form.checkedStudents" @change="handleCheckedStudentsChange">
-          <el-checkbox style="margin-left: 0px; margin-right: 30px" v-for="student in form.students" :label="student" :key="student.id">{{student.name}}</el-checkbox>
+        <el-checkbox-group v-model="form.checkedStudents">
+          <el-checkbox :disabled="student.flag" style="margin-left: 0px; margin-right: 30px" v-for="student in form.students" :label="student" :key="student.id">{{student.name}} - {{student.flag ? '未出分' : student.score + '分'}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item>
@@ -40,15 +39,14 @@
 
 <script>
   import ResourceTeacher from '@/services/teacher'
+  import hostPort from '@/utils'
   export default {
     name: 'StudentList',
     data () {
       return {
         form: {
-          checkAll: false,
           students: [],
-          checkedStudents: [],
-          isIndeterminate: true
+          checkedStudents: []
         }
       }
     },
@@ -56,18 +54,36 @@
       fetchStudentList () {
         // 加载数据
         let examId = this.$route.params.exam_id
-        this.form.students = ResourceTeacher.examStudentList({examId: examId}).data
-      },
-      handleCheckAllChange (val) {
-        this.form.checkedStudents = val ? this.form.students : []
-        this.form.isIndeterminate = false
-      },
-      handleCheckedStudentsChange (value) {
-        let checkedCount = value.length
-        this.form.checkAll = checkedCount === this.form.students.length
-        this.form.isIndeterminate = checkedCount > 0 && checkedCount < this.form.students.length
+        let params = {
+          examId: examId
+        }
+        ResourceTeacher.examStudentList(params).then((res) => {
+          this.form.students = []
+          this.form.readyStudents = []
+          let studentList = res.data
+          studentList.map((obj) => {
+            this.form.students.push({
+              index: obj.id + '',
+              id: obj.id,
+              name: obj.name,
+              score: obj.score,
+              flag: obj.score == null
+            })
+          })
+        })
       },
       onSubmit () {
+        console.log(this.form.checkedStudents)
+        let studentIdList = []
+        this.form.checkedStudents.map((obj) => {
+          studentIdList.push(obj.id)
+        })
+        ResourceTeacher.downLoadStudentExamPaper({examId: this.$route.params.exam_id, studentIdList: studentIdList}).then((res) => {
+          let fileUrl = res.data.fileUrl
+          let url = hostPort + fileUrl
+          var newTab = window.open('about:blank')
+          newTab.location.href = url
+        })
       },
       onCancel () {
         this.$router.back()

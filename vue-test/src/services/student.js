@@ -1,32 +1,23 @@
-// import Axios from 'axios'
+import Axios from 'axios'
 
 export default {
   examList ({studentId}) {
-    return {
-      data: [
-        {name: '软工II期末考试', index: '1', key: '1'},
-        {name: '软件过程单元测试', index: '2', key: '2'}
-      ]
-    }
+    return Axios.get('/student/' + studentId + '/exam')
   },
-  enterExam ({studentId, code}) {
-    return {
-      data: {}
-    }
+  enterExam ({studentId, code, examId}) {
+    return Axios.post('/student/' + studentId + '/exam/' + examId, {
+      code: code
+    })
   },
   examInfo ({examId}) {
-    return {
-      data: {}
-    }
+    return Axios.get('/exam/' + examId)
   },
   questionInfo ({questionId}) {
-    return {
-      data: {}
-    }
+    return Axios.get('/question/' + questionId)
   },
   examSubmit ({studentId, examId, answerList}) {
-    return {
-      data: {}
-    }
+    return Axios.post('/student/' + studentId + '/exam/' + examId + '/submit', {
+      answer: answerList
+    })
   }
 }

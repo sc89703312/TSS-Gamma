@@ -91,11 +91,6 @@
     },
     methods: {
       registerAndLogin () {
-//        if (this.form.type === '学生') {
-//          this.$router.push({name: 'StudentHome', params: {student_id: 1}})
-//        } else {
-//          this.$router.push({name: 'TeacherHome'})
-//        }
         let params = {
           email: this.form.email,
           password: this.form.password,
@@ -106,15 +101,16 @@
           params.number = this.form.number
         }
         ResourceVerify.register(params).then((res) => {
-          if (this.form.type === '学生') {
-            this.$router.push({name: 'StudentHome', params: {student_id: 1}})
+          let userInfo = res.data
+          if (userInfo.type === 1) {
+            this.$router.push({name: 'TeacherHome', params: {teacher_id: userInfo.id}})
           } else {
-            this.$router.push({name: 'TeacherHome', params: {teacher_id: 1}})
+            this.$router.push({name: 'StudentHome', params: {student_id: userInfo.id}})
           }
-          this.$cookie.set('user_id', 1)
+          this.$cookie.set('user_id', userInfo.id)
         }).catch((err) => {
           console.log('err')
-          let errMsg = err.response.data.message
+          let errMsg = (err.response) ? err.response.data.message : '服务器连接出错'
           let options = {
             message: errMsg
           }

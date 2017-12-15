@@ -103,9 +103,10 @@
       },
       fetchCourseList () {
         // 将来会在这些方法里面做数据加载 调用services中文件
-        let teacherId = parseInt(this.$cookie.get('user_id'))
+        let teacherId = parseInt(this.$cookie.get('teacher_id'))
         ResourceTeacher.courseList({teacherId: teacherId}).then((res) => {
           let courseList = res.data
+          this.items = []
           courseList.map((obj) => {
             this.items.push({
               id: obj.id,
@@ -126,6 +127,13 @@
       //  mounted在组件创建完成后执行,加载数据用,注意mounted方法在组件生命周期中只加载一次
       //  如果需要根据url加载数据,则需要对route做监听
       this.fetchCourseList()
+    },
+    watch: {
+      // 在该组件的生命周期内,可能需要根据url中的course_id加载多次数据
+      // 需要使用watch监听route的变化 修改数据内容
+      $route () {
+        this.fetchCourseList()
+      }
     }
   }
 </script>

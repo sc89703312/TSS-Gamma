@@ -7,7 +7,7 @@
       <el-col>
         <el-upload
           class="upload-demo"
-          action="http://localhost:8080/file/upload"
+          :action="uploadUrl"
           :show-file-list="false"
           :on-success="uploadSuccess"
           :on-error="uploadFail">
@@ -17,11 +17,11 @@
     </el-row>
     <div>
       <el-table :data="tableData">
-        <el-table-column prop="exam_id" label="考试编号" width="120">
+        <el-table-column prop="exam_id" label="考试编号" width="80">
         </el-table-column>
-        <el-table-column prop="date" label="考试日期" width="160">
+        <el-table-column prop="name" label="考试名称" width="200">
         </el-table-column>
-        <el-table-column prop="name" label="考试名称">
+        <el-table-column prop="date" label="考试日期">
         </el-table-column>
         <el-table-column
           label=""
@@ -48,10 +48,12 @@
 
 <script>
   import ResourceTeacher from '@/services/teacher'
+  import hostPort from '@/utils'
   export default {
     name: 'ExamTable',
     data () {
       return {
+        uploadUrl: hostPort + '/file/upload',
         tableData: []
       }
     },
@@ -60,8 +62,18 @@
       fetchExamList () {
         // 加载数据
         let id = parseInt(this.$route.params.course_id)
-        let res = ResourceTeacher.courseExamList({courseId: id})
-        this.tableData = res.data
+        ResourceTeacher.courseExamList({courseId: id}).then((res) => {
+          this.tableData = []
+          let examList = res.data
+          examList.map((obj) => {
+            this.tableData.push({
+              exam_id: obj.id,
+              name: obj.name,
+              date: obj.startTime + ' ~ ' + obj.endTime
+            })
+          })
+        })
+//        this.tableData = res.data
       },
 
       addRecord () {
@@ -69,15 +81,18 @@
         this.$router.push({name: 'CreateExam', params: {course_id: this.$route.params.course_id}})
       },
 
-      uploadQuestion () {
-        console.log('导入题库')
-      },
-
       uploadSuccess (res, file, fileList) {
-        console.log(res)
+        let questionFile = res.filename
+        console.log(questionFile)
         this.$message({
-          message: '文件 ' + res + ' 上传成功',
+          message: '文件 ' + questionFile + ' 上传成功',
           type: 'success'
+        })
+        ResourceTeacher.uploadQuestion({
+          courseId: this.$route.params.course_id,
+          questionFile: questionFile
+        }).then((res) => {
+          console.log(res.data)
         })
       },
 
@@ -96,6 +111,13 @@
 
       downloadExam (row) {
         console.log('下载考试id为 ' + row.exam_id + ' 的试卷')
+        ResourceTeacher.downLoadExam({examId: row.exam_id}).then((res) => {
+          let fileUrl = res.data.fileUrl
+          let url = hostPort + fileUrl
+          var newTab = window.open('about:blank')
+          newTab.location.href = url
+//          newTab.close()
+        })
       }
     },
 

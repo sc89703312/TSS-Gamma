@@ -58,6 +58,7 @@
 </style>
 
 <script>
+  import ResourceStudent from '@/services/student'
   export default {
     name: 'AnswerGather',
     data () {
@@ -93,6 +94,32 @@
       },
       submitAnswerPaper () {
         console.log('submit!')
+        let answerList = JSON.parse(this.$cookie.get('answerList'))
+        let questionList = this.$cookie.get('questionList').split(',')
+        let answer = {}
+        let count = 0
+        questionList.map((obj) => {
+          let item = answerList[count]
+          if (item === -1) {
+            answer[obj] = []
+          } else if (item instanceof Array) {
+            answer[obj] = item
+          } else {
+            answer[obj] = [item]
+          }
+          count++
+        })
+        ResourceStudent.examSubmit({
+          studentId: this.$route.params.student_id,
+          examId: this.$route.params.exam_id,
+          answerList: answer
+        }).then((res) => {
+          this.$message({
+            message: '成功提交',
+            type: 'success'
+          })
+          this.$router.push({name: 'StudentHome', params: {student_id: this.$route.params.student_id}})
+        })
       }
     },
     mounted () {

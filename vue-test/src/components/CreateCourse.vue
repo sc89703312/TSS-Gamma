@@ -13,6 +13,7 @@
   </div>
 </template>
 <script>
+  import ResourceTeacher from '@/services/teacher'
   export default {
     name: 'CreateCourse',
     data () {
@@ -24,6 +25,17 @@
     },
     methods: {
       onSubmit () {
+        let teacherId = this.$cookie.get('teacher_id')
+        ResourceTeacher.createCourse({
+          teacherId: teacherId,
+          courseName: this.form.name
+        }).then((res) => {
+          this.$message({
+            message: '课程创建成功',
+            type: 'success'
+          })
+          this.$router.push({name: 'TeacherHome', params: {teacher_id: teacherId}})
+        })
       },
       onCancel () {
         this.$router.back()
