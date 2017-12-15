@@ -60,7 +60,7 @@ public class ExamPaperController {
             fileNameList.add(fileName);
         }
 
-        String compressFileName = "学生"+examEntity.getName()+"考试试卷";
+        String compressFileName = "学生"+examEntity.getName()+"考试试卷.zip";
         FileHelper.compressExcels(compressFileName,fileNameList);
 
         return new FileUrlVo("/download/" + compressFileName);
