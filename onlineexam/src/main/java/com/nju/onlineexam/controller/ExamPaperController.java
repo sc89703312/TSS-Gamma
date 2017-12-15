@@ -5,13 +5,16 @@ import com.nju.onlineexam.entity.ExamEntity;
 import com.nju.onlineexam.service.PaperExcelHandler;
 import com.nju.onlineexam.util.FileHelper;
 import com.nju.onlineexam.vo.FileUrlVo;
+import com.nju.onlineexam.vo.StudentPaperParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,10 +38,11 @@ public class ExamPaperController {
     }
 
     @PostMapping("/exam/{examId}/papers")
-    public FileUrlVo getStudentPaper(@PathVariable int examId,
-                                     List<Integer> studentIdList) throws IOException {
+    public FileUrlVo getStudentPaper(@PathVariable int examId,@RequestBody StudentPaperParam studentPaperParam) throws IOException {
         // 单个试卷直接返回,多个试卷返回压缩包
         // paperExcelHandler.generateStudentPaper
+
+        List<Integer> studentIdList = studentPaperParam.getStudentIdList();
 
         if(studentIdList == null || studentIdList.isEmpty()){
             return null;
