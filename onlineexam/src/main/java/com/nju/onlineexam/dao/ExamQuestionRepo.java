@@ -14,4 +14,6 @@ public interface ExamQuestionRepo extends JpaRepository<ExamQuestionEntity,Integ
     @Query("select  sum(eq.score) from exam_question eq where eq.exam.id = ?1 and eq.question.id in ?2")
     Integer calculateScore(int examId , List<Integer> questionId);
 
+    ExamQuestionEntity getByQuestionIdAndExamId(int questionId, int examId);
+
 }

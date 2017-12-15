@@ -38,6 +38,9 @@ public class StudentController {
     @Autowired
     ExamService examService;
 
+    @Autowired
+    DataConverter dataConverter;
+
     /**
      * 查看自己尚未参加的考试列表
      */
@@ -46,7 +49,7 @@ public class StudentController {
         List<ExamEntity> examEntities = studentExamRepo.findUnattendedExams(id);
         return examEntities.stream().map(entity -> {
 
-            return DataConverter.convertToExamVo(entity);
+            return dataConverter.convertToExamVo(entity);
 
         }).collect(Collectors.toList());
     }
