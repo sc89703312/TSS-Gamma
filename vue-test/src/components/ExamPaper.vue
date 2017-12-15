@@ -102,7 +102,8 @@
       timerCal () {
         var date = new Date()
         var now = date.getTime()
-        var endDate = new Date('2017-12-8 23:23:23')
+        let endTime = this.$cookie.get('endTime')
+        var endDate = new Date(endTime)
         var end = endDate.getTime()
         var leftTime = end - now
         var h, m, s

@@ -62,7 +62,7 @@
 </style>
 <script>
   import ResourceTeacher from '@/services/teacher'
-  import hostPort from '@/utils'
+  import util from './../../static/utils'
   export default {
     name: 'CreateExam',
     data () {
@@ -75,7 +75,7 @@
           studentFile: ''
         },
         loading: false,
-        uploadUrl: hostPort + '/file/upload'
+        uploadUrl: util.hostPort + '/file/upload'
       }
     },
     methods: {
