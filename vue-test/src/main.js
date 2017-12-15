@@ -7,11 +7,13 @@ import ElementUI from 'element-ui'
 import VueCookie from 'vue-cookie'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/base.css'
-import hostPort from '@/utils'
+import util from './../static/utils'
 import Axios from 'axios'
 
-Axios.defaults.baseURL = hostPort + '/'
+Axios.defaults.baseURL = util.hostPort + '/'
 console.log(Axios.defaults.baseURL)
+
+console.log(util.hostPort)
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

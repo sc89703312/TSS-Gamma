@@ -24,6 +24,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      'static': path.resolve(__dirname, '../static')
     }
   },
   module: {
@@ -45,7 +46,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test'), resolve('static/utils.js')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

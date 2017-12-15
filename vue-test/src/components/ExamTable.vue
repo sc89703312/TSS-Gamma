@@ -48,12 +48,12 @@
 
 <script>
   import ResourceTeacher from '@/services/teacher'
-  import hostPort from '@/utils'
+  import util from './../../static/utils'
   export default {
     name: 'ExamTable',
     data () {
       return {
-        uploadUrl: hostPort + '/file/upload',
+        uploadUrl: util.hostPort + '/file/upload',
         tableData: []
       }
     },
@@ -113,7 +113,7 @@
         console.log('下载考试id为 ' + row.exam_id + ' 的试卷')
         ResourceTeacher.downLoadExam({examId: row.exam_id}).then((res) => {
           let fileUrl = res.data.fileUrl
-          let url = hostPort + fileUrl
+          let url = util.hostPort + fileUrl
           var newTab = window.open('about:blank')
           newTab.location.href = url
 //          newTab.close()

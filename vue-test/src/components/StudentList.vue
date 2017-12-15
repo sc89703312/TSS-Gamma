@@ -39,7 +39,7 @@
 
 <script>
   import ResourceTeacher from '@/services/teacher'
-  import hostPort from '@/utils'
+  import util from './../../static/utils'
   export default {
     name: 'StudentList',
     data () {
@@ -80,7 +80,7 @@
         })
         ResourceTeacher.downLoadStudentExamPaper({examId: this.$route.params.exam_id, studentIdList: studentIdList}).then((res) => {
           let fileUrl = res.data.fileUrl
-          let url = hostPort + fileUrl
+          let url = util.hostPort + fileUrl
           var newTab = window.open('about:blank')
           newTab.location.href = url
         })
