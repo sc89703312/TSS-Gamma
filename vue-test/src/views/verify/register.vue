@@ -103,11 +103,12 @@
         ResourceVerify.register(params).then((res) => {
           let userInfo = res.data
           if (userInfo.type === 1) {
+            this.$cookie.set('teacher_id', userInfo.id)
             this.$router.push({name: 'TeacherHome', params: {teacher_id: userInfo.id}})
           } else {
+            this.$cookie.set('student_id', userInfo.id)
             this.$router.push({name: 'StudentHome', params: {student_id: userInfo.id}})
           }
-          this.$cookie.set('user_id', userInfo.id)
         }).catch((err) => {
           console.log('err')
           let errMsg = (err.response) ? err.response.data.message : '服务器连接出错'

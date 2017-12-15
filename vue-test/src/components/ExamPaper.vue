@@ -203,6 +203,8 @@
         let indexList = JSON.parse(this.$cookie.get('indexList'))
         let currentQId = this.$route.params.q_id
         let questionList = this.$cookie.get('questionList').split(',')
+        console.log(questionList)
+        console.log(typeof currentQId)
         let currentIndex = questionList.indexOf(currentQId)
         let recordSelect = indexList[currentIndex]
         console.log('recordSelect: ' + recordSelect)

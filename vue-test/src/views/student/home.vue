@@ -166,7 +166,7 @@
             params: {
               student_id: this.$route.params.student_id,
               exam_id: this.currentIndex,
-              q_id: this.$cookie.get('questionList')[0]
+              q_id: this.$cookie.get('questionList').split(',')[0]
             }
           })
         })
