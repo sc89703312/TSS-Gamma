@@ -109,40 +109,78 @@
       fetchExamList () {
         // 将来会在这些方法里面做数据加载 调用services中文件
         let id = this.$route.params.student_id
-        this.items = ResourceStudent.examList({studentId: id}).data
+        ResourceStudent.examList({studentId: id}).then((res) => {
+          this.items = []
+          let examList = res.data
+          examList.map((obj) => {
+            this.items.push({
+              index: obj.id + '',
+              id: obj.id,
+              name: obj.name
+            })
+          })
+        })
       },
       verifyExamCode () {
         console.log('exam code : ' + this.pwd)
-        this.pwdDialogVisible = false
-        this.fetchExamInitData()
-        this.$router.push({name: 'ExamPaper',
-          params: {
-            student_id: this.$route.params.student_id,
-            exam_id: this.currentIndex,
-            q_id: this.$cookie.get('questionList')[0]
-          }
+        let params = {
+          studentId: this.$route.params.student_id,
+          code: this.pwd,
+          examId: this.currentIndex
+        }
+        ResourceStudent.enterExam(params).then((res) => {
+          this.pwdDialogVisible = false
+          this.fetchExamInitData()
+        }).catch((err) => {
+          console.log(err)
+          this.pwdDialogVisible = false
+          let errMsg = (err.response) ? err.response.data.message : '服务器连接出错'
+          this.$message({
+            message: errMsg,
+            type: 'error'
+          })
         })
       },
       fetchExamInitData () {
-        let questionList = ['1', '2', '3', '4', '5', '6']
-        let questionNum = questionList.length
-        let answerList = []
-        let answerContent = []
-        questionList.map(function (value, index) {
-          answerList.push(-1)
-          answerContent.push('')
+        ResourceStudent.examInfo({examId: this.currentIndex}).then((res) => {
+          let examInfo = res.data
+          let endTime = examInfo.endTime
+          let questionList = examInfo.questionList
+          let questionNum = questionList.length
+          let answerList = []
+          let answerContent = []
+          let indexList = []
+          questionList.map(function (value, index) {
+            answerList.push(-1)
+            indexList.push(-1)
+            answerContent.push('')
+          })
+          this.$cookie.set('questionList', questionList)
+          this.$cookie.set('questionNum', questionNum)
+          this.$cookie.set('markedList', [])
+          this.$cookie.set('answerList', JSON.stringify(answerList))
+          this.$cookie.set('indexList', JSON.stringify(indexList))
+          this.$cookie.set('answerContent', JSON.stringify(answerContent))
+          this.$cookie.set('endTime', endTime)
+          this.$router.push({name: 'ExamPaper',
+            params: {
+              student_id: this.$route.params.student_id,
+              exam_id: this.currentIndex,
+              q_id: this.$cookie.get('questionList')[0]
+            }
+          })
         })
-        this.$cookie.set('questionList', questionList)
-        this.$cookie.set('questionNum', questionNum)
-        this.$cookie.set('markedList', [])
-        this.$cookie.set('answerList', JSON.stringify(answerList))
-        this.$cookie.set('answerContent', JSON.stringify(answerContent))
       }
     },
     mounted () {
       //  mounted在组件创建完成后执行,加载数据用,注意mounted方法在组件生命周期中只加载一次
       //  如果需要根据url加载数据,则需要对route做监听
       this.fetchExamList()
+    },
+    watch: {
+      $route () {
+        this.fetchExamList()
+      }
     }
   }
 </script>

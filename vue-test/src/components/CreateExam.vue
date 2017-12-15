@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <h4 class="form-title">新建考试</h4>
     <el-form class="create-exam-el-form" ref="form" :model="form" label-width="80px" size="medium" label-position="left">
       <el-form-item label="考试名称">
@@ -11,12 +11,15 @@
           type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="学生列表">
         <el-upload
-          action="https://jsonplaceholder.typicode.com/posts/">
+          :action="uploadUrl"
+          :on-success="uploadSuccess"
+          :on-error="uploadFail">
           <el-button icon="el-icon-upload" type="success" size="small">点击上传</el-button>
         </el-upload>
       </el-form-item>
@@ -58,6 +61,8 @@
   }
 </style>
 <script>
+  import ResourceTeacher from '@/services/teacher'
+  import hostPort from '@/utils'
   export default {
     name: 'CreateExam',
     data () {
@@ -66,16 +71,55 @@
           name: '',
           date: '',
           number: '',
-          scores: []
-        }
+          scores: [],
+          studentFile: ''
+        },
+        loading: false,
+        uploadUrl: hostPort + '/file/upload'
       }
     },
     methods: {
       onSubmit () {
-        console.log(this.form.scores)
+        console.log(this.form)
+        let startTimeStr = this.form.date[0]
+        let endTimeStr = this.form.date[1]
+        let params = {
+          courseId: this.$route.params.course_id,
+          examName: this.form.name,
+          startTime: startTimeStr,
+          endTime: endTimeStr,
+          studentListFile: this.form.studentFile,
+          scoreList: this.form.scores
+        }
+        this.loading = true
+        ResourceTeacher.courseExamCreate(params).then((res) => {
+          console.log(res.data)
+          this.loading = false
+          this.$message({
+            message: '考试 ' + res.data.id + ' 创建成功',
+            type: 'success'
+          })
+          this.$router.push({name: 'TestTable', params: {course_id: this.$route.params.course_id}})
+        }).catch((err) => {
+          this.loading = false
+          console.log(err)
+          this.$message({
+            message: '考试创建失败',
+            type: 'error'
+          })
+        })
       },
       onCancel () {
         this.$router.back()
+      },
+      uploadSuccess (res, file, fileList) {
+        this.form.studentFile = res.filename
+      },
+      uploadFail (res, file, fileList) {
+        this.$message({
+          message: '上传学生列表文件失败',
+          type: 'error'
+        })
       }
     }
   }

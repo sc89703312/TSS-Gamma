@@ -1,74 +1,40 @@
-// import Axios from 'axios'
+import Axios from 'axios'
 
 export default {
   courseList ({teacherId}) {
-    return {
-      data: [
-        {name: '软件工程与计算I', index: '1', key: '1'},
-        {name: '软件过程管理', index: '2', key: '2'}
-      ]
-    }
+    return Axios.get('/teacher/' + teacherId + '/course')
   },
   createCourse ({teacherId, courseName}) {
-    return {
-      data: {}
-    }
+    return Axios.post('/teacher/' + teacherId + '/course', {
+      name: courseName
+    })
   },
   courseExamList ({courseId}) {
-    if (courseId === 1) {
-      return {
-        data: [
-          {
-            exam_id: '000001',
-            date: '2016/07/11',
-            name: '软件工程与计算期中考试'
-          }
-        ]
-      }
-    } else {
-      return {
-        data: [
-          {
-            exam_id: '000002',
-            date: '2016/07/11',
-            name: '软件过程管理第一单元测试'
-          },
-          {
-            exam_id: '000003',
-            date: '2016/07/11',
-            name: '软件过程管理第二单元测试'
-          }
-        ]
-      }
-    }
+    return Axios.get('/course/' + courseId + '/exam')
   },
-  courseExamCreate ({courseName, startTime, endTime, studentListFileId, scoreList}) {
-    return {
-      data: {}
-    }
+  uploadQuestion ({courseId, questionFile}) {
+    return Axios.post('/course/' + courseId + '/question', {
+      questionFile: questionFile
+    })
+  },
+  courseExamCreate ({courseId, examName, startTime, endTime, studentListFile, scoreList}) {
+    return Axios.post('/course/' + courseId + '/exam', {
+      name: examName,
+      startTime: startTime,
+      endTime: endTime,
+      studentListFile: studentListFile,
+      scoreList: scoreList
+    })
   },
   downLoadExam ({examId}) {
-    return {
-      data: {}
-    }
+    return Axios.post('/exam/' + examId + '/download')
   },
   examStudentList ({examId}) {
-    let index = 0
-    let students = []
-    for (;index < 50; index++) {
-      let item = {
-        id: index,
-        name: '张三'
-      }
-      students.push(item)
-    }
-    return {
-      data: students
-    }
+    return Axios.get('/exam/' + examId + '/students')
   },
   downLoadStudentExamPaper ({examId, studentIdList}) {
-    return {
-      data: {}
-    }
+    return Axios.post('/exam/' + examId + '/papers', {
+      studentIdList: studentIdList
+    })
   }
 }
