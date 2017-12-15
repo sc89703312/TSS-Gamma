@@ -1,4 +1,6 @@
 spring:
+  resources:
+    static-locations: file:dist/
   mail:
     host: smtp.163.com
     username: 13260905180

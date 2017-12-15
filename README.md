@@ -1,5 +1,12 @@
 # TSS-Gamma 前后端对接api
 
+## 部署
+有四部分需要部署
+1. jar包
+2. db文件
+3. excels文件夹, 里边是excel模板
+4. dist文件夹, 里边是静态资源
+
 ## 修改历史
 1. 创建考试的返回值，参数`courseName`改为`name`
 2. 上传文件url改为`file/upload`

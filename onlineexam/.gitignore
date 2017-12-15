@@ -3,6 +3,7 @@ target/
 upload/
 download/
 .db
+dist/
 
 ### STS ###
 .apt_generated
